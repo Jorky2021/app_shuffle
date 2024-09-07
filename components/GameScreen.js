@@ -348,6 +348,35 @@ export function GameScreen({ navigation }) {
             </Pressable>
          </View> */}
 
+         {/* STATUS bar */}
+         <View
+            style={[
+               styles.segment,
+               {
+                  flex: 2,
+                  backgroundColor: "blue",
+                  flexDirection: "row",
+                  justifyContent: "space-around",
+                  alignItems: "flex-end",
+               },
+            ]}
+         >
+            <View style={[styles.statusBox]}>
+               <Text style={[styles.statusBoxTextRegular]}>LEVEL</Text>
+               <Text style={[styles.statusBoxTextRegular]}>{level}</Text>
+            </View>
+
+            <View style={[styles.statusBox]}>
+               <Text style={[styles.statusBoxTextBold]}>TIME</Text>
+               <Text style={[styles.statusBoxTextBold]}>{countdown}</Text>
+            </View>
+
+            <View style={[styles.statusBox]}>
+               <Text style={[styles.statusBoxTextRegular]}>SCORE</Text>
+               <Text style={[styles.statusBoxTextRegular]}>{gameScore}</Text>
+            </View>
+         </View>
+
          {/* Solution GRID area */}
          <View style={[styles.segment, { flex: 3, justifyContent: "center" }]}>
             <Pressable
@@ -362,14 +391,14 @@ export function GameScreen({ navigation }) {
                   styles.solutionArea,
                ]}
             >
-               <Text style={styles.howItWorksButtonLabel}>Level: {level}</Text>
+               {/* <Text style={styles.howItWorksButtonLabel}>Level: {level}</Text>
 
                <Text style={styles.howItWorksButtonLabel}>
                   Remaining time: {countdown}
                </Text>
                <Text style={styles.howItWorksButtonLabel}>
                   SCORE count: {gameScore}
-               </Text>
+               </Text> */}
                <Text style={styles.howItWorksButtonLabel}>{proposedWord}</Text>
             </Pressable>
          </View>
@@ -497,6 +526,27 @@ const styles = StyleSheet.create({
       justifyContent: "center",
    },
 
+   statusBox: {
+      width: "25%",
+      height: "45%",
+      backgroundColor: "yellow",
+      borderRadius: 10,
+      alignItems: "center",
+      justifyContent: "center",
+   },
+
+   statusBoxTextRegular: {
+      color: "red",
+      fontFamily: "Nunito_400Regular",
+      fontSize: 22,
+   },
+
+   statusBoxTextBold: {
+      color: "red",
+      fontFamily: "Nunito_700Bold",
+      fontSize: 24,
+   },
+
    overlayPrimeScreen: {
       position: "absolute",
       width: "100%",
@@ -517,7 +567,8 @@ const styles = StyleSheet.create({
       // width: Dimensions.get("window").width,
       // height: Dimensions.get("window").height,
 
-      backgroundColor: "rgba(255, 255, 255, 0.75)",
+      // backgroundColor: "rgba(255, 255, 255, 0.75)",
+      backgroundColor: "rgba(255, 55, 155, 0.75)",
       justifyContent: "center",
       alignItems: "center",
       flexDirection: "column",
@@ -592,11 +643,6 @@ const styles = StyleSheet.create({
       fontSize: 24,
    },
 
-   howItWorksButtonLabel: {
-      color: "black",
-      fontFamily: "Nunito_400Regular",
-      fontSize: 22,
-   },
    aboutMeButtonLabel: {
       color: "#fdfdfd",
       fontFamily: "Nunito_400Regular",
