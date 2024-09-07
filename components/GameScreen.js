@@ -126,6 +126,58 @@ export function GameScreen({ navigation }) {
       </View>
    );
 
+   // Screen for LevelCleared overlay
+   const LevelCleared = ({ title, showButton }) => (
+      <View style={styles.overlayScreen}>
+         <Image
+            source={require("../assets/trophy.png")}
+            style={{
+               flex: 2,
+               width: "40%",
+               height: "40%",
+               resizeMode: "contain",
+            }}
+         ></Image>
+
+         <View style={{ flex: 2 }}>
+            <Text
+               style={{
+                  fontSize: 55,
+                  fontFamily: "Nunito_700Bold",
+               }}
+            >
+               WELL DONE!
+            </Text>
+         </View>
+
+         <View style={{ flex: 1 }}>
+            <Pressable
+               onPress={() => nextLevel()}
+               unstable_pressDelay={100}
+               style={({ pressed }) => [
+                  {
+                     backgroundColor: pressed
+                        ? "rgb(210, 230, 255)"
+                        : "darkblue", // #579257
+                     // : "rgb(238,230,255)", // #579257
+                  },
+                  styles.button,
+                  { borderRadius: 20, width: 250, height: 70 },
+               ]}
+            >
+               <Text
+                  style={[
+                     styles.findStationsButtonLabel,
+                     { fontSize: 30, letterSpacing: 3 },
+                  ]}
+               >
+                  Next Level
+               </Text>
+            </Pressable>
+         </View>
+      </View>
+   );
+
    // Screen for GameOver overlay
    const GameOver = ({ title, showButton }) => (
       <View style={styles.overlayScreen}>
@@ -144,21 +196,6 @@ export function GameScreen({ navigation }) {
             title="MAIN MENU"
             onPress={() => navigation.navigate("Home")}
          />
-      </View>
-   );
-
-   // Screen for Level completed overlay
-   const LevelCleared = ({ title, showButton }) => (
-      <View style={styles.overlayScreen}>
-         <Text style={{ fontSize: 60, color: "green" }}>{title}</Text>
-         {showButton && (
-            <Button
-               title="Next Level"
-               onPress={() => {
-                  nextLevel();
-               }}
-            />
-         )}
       </View>
    );
 
