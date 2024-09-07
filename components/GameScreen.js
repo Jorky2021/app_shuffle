@@ -52,7 +52,7 @@ export function GameScreen({ navigation }) {
    let permutations = [];
    let validWords = [];
    let shuffled = [];
-   let levelCounter = 1;
+   // let levelCounter = 1;
    let countdownValue = 12;
 
    // create state elements
@@ -74,6 +74,8 @@ export function GameScreen({ navigation }) {
    const LevelStart = ({ title, showButton }) => (
       <View style={styles.clearScreen}>
          <Text style={{ fontSize: 50 }}>{title}</Text>
+         <Text style={{ fontSize: 30 }}>LEVEL: {level}</Text>
+         {/* <Text style={{ fontSize: 30 }}>SCORE: {gameScore}</Text> */}
          {showButton && (
             <Button
                title="Start Now!"
@@ -89,7 +91,7 @@ export function GameScreen({ navigation }) {
    const GameOver = ({ title, showButton }) => (
       <View style={styles.clearScreen}>
          <Text style={{ fontSize: 40 }}>{title}</Text>
-         <Text style={{ fontSize: 30 }}>LEVEL: {level}</Text>
+         {/* <Text style={{ fontSize: 30 }}>LEVEL: {level}</Text> */}
          <Text style={{ fontSize: 30 }}>SCORE: {gameScore}</Text>
          {showButton && (
             <Button
@@ -127,18 +129,20 @@ export function GameScreen({ navigation }) {
    // });
 
    function nextLevel() {
-      levelCounter = level + 1;
-      setLevel(levelCounter);
-      // setLevel(level + 1);
+      // levelCounter = level + 1;
+      // setLevel(levelCounter);
+      setLevel(level + 1);
       setLevelCleared(false);
-      fetchButtonPressed();
+      setLevelStart(true);
+      // fetchButtonPressed();
    }
 
    function resetGame() {
       setGameOver(false);
       setLevel(1);
       setGameScore(0);
-      fetchButtonPressed();
+      setLevelStart(true);
+      // fetchButtonPressed();
    }
 
    const myInterval = useRef(undefined);
@@ -203,15 +207,16 @@ export function GameScreen({ navigation }) {
       // clear proposedWord, entered by user
       setProposedWord("");
 
-      console.log(
-         "|||||| in fetchButtonPressed(), level=",
-         level,
-         "levelCounter=",
-         levelCounter
-      );
+      // console.log(
+      //    "|||||| in fetchButtonPressed(), level=",
+      //    level,
+      //    "levelCounter=",
+      //    levelCounter
+      // );
 
       // set word length based on level: L1_to_L3: wL=4; L4_to_L6: wL=5; ...
-      let wordLength = Math.ceil(levelCounter / 3) + 3;
+      // let wordLength = Math.ceil(levelCounter / 3) + 3;
+      let wordLength = Math.ceil(level / 3) + 3;
       // 1 - Fetch a word
       fetchedWord = ShuffleMechs.fetchWord(wordLength, wordLength);
       setTargetWord(fetchedWord);
@@ -316,8 +321,8 @@ export function GameScreen({ navigation }) {
 
    return (
       <View style={styles.container}>
-         {/* 'Button' to fetch a word */}
-         <View style={[styles.segment, { flex: 2, paddingTop: 50 }]}>
+         {/* 'BUTTON' to fetch a word */}
+         {/* <View style={[styles.segment, { flex: 2, paddingTop: 50 }]}>
             <Pressable
                // onPress={() => navigation.navigate("Station List")}
                onPress={() =>
@@ -338,7 +343,7 @@ export function GameScreen({ navigation }) {
             >
                <Text style={styles.findStationsButtonLabel}>Fetch a word</Text>
             </Pressable>
-         </View>
+         </View> */}
 
          {/* Solution GRID area */}
          <View style={[styles.segment, { flex: 3, justifyContent: "center" }]}>
