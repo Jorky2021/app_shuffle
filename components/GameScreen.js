@@ -11,9 +11,6 @@ import {
    View,
 } from "react-native";
 
-// PLAYING AROUND
-import { Button } from "react-native";
-
 import React, { useEffect, useRef, useState } from "react";
 
 import { generate, count, wordsList } from "random-words";
@@ -54,7 +51,7 @@ export function GameScreen({ navigation }) {
    let validWords = [];
    let shuffled = [];
    // let levelCounter = 1;
-   let countdownValue = 30;
+   let countdownValue = 10;
 
    // create state elements
    const [targetWord, setTargetWord] = useState("");
@@ -76,7 +73,7 @@ export function GameScreen({ navigation }) {
 
    // Screen for LevelStart overlay
    const LevelStart = ({ title, showButton }) => (
-      <View style={styles.overlayScreen}>
+      <View style={styles.LevelStartOverlayScreen}>
          <Image
             source={require("../assets/level-up.png")}
             style={{
@@ -106,8 +103,8 @@ export function GameScreen({ navigation }) {
                   {
                      backgroundColor: pressed
                         ? "rgb(210, 230, 255)"
-                        : "darkblue", // #579257
-                     // : "rgb(238,230,255)", // #579257
+                        : "rgb(33,79,198)",
+                     // : "darkblue", // #579257
                   },
                   styles.button,
                   { borderRadius: 20, width: 200, height: 70 },
@@ -119,7 +116,7 @@ export function GameScreen({ navigation }) {
                      { fontSize: 40, letterSpacing: 3 },
                   ]}
                >
-                  Go!
+                  GO!
                </Text>
             </Pressable>
          </View>
@@ -128,13 +125,13 @@ export function GameScreen({ navigation }) {
 
    // Screen for LevelCleared overlay
    const LevelCleared = ({ title, showButton }) => (
-      <View style={styles.overlayScreen}>
+      <View style={styles.LevelClearedOverlayScreen}>
          <Image
             source={require("../assets/trophy.png")}
             style={{
                flex: 2,
-               width: "40%",
-               height: "40%",
+               width: "50%",
+               height: "50%",
                resizeMode: "contain",
             }}
          ></Image>
@@ -142,6 +139,7 @@ export function GameScreen({ navigation }) {
          <View style={{ flex: 2 }}>
             <Text
                style={{
+                  textAlign: "center",
                   fontSize: 55,
                   fontFamily: "Nunito_700Bold",
                }}
@@ -158,11 +156,10 @@ export function GameScreen({ navigation }) {
                   {
                      backgroundColor: pressed
                         ? "rgb(210, 230, 255)"
-                        : "darkblue", // #579257
-                     // : "rgb(238,230,255)", // #579257
+                        : "rgb(0, 106, 78)", // #579257
                   },
                   styles.button,
-                  { borderRadius: 20, width: 250, height: 70 },
+                  { borderRadius: 20, width: 250, height: 80 },
                ]}
             >
                <Text
@@ -180,29 +177,81 @@ export function GameScreen({ navigation }) {
 
    // Screen for GameOver overlay
    const GameOver = ({ title, showButton }) => (
-      <View style={styles.overlayScreen}>
-         <Text style={{ fontSize: 40 }}>{title}</Text>
-         {/* <Text style={{ fontSize: 30 }}>LEVEL: {level}</Text> */}
-         <Text style={{ fontSize: 30 }}>SCORE: {gameScore}</Text>
-         {showButton && (
-            <Button
-               title="Play again"
-               onPress={() => {
-                  resetGame();
+      <View style={styles.GameOverOverlayScreen}>
+         <Image
+            source={require("../assets/game-over.png")}
+            style={{
+               flex: 2,
+               width: "70%",
+               height: "60%",
+               resizeMode: "contain",
+            }}
+         ></Image>
+
+         <View style={{ flex: 1 }}>
+            <Text
+               style={{
+                  textAlign: "center",
+                  fontSize: 45,
+                  fontFamily: "Nunito_700Bold",
                }}
-            />
-         )}
-         <Button
-            title="MAIN MENU"
-            onPress={() => navigation.navigate("Home")}
-         />
+            >
+               SCORE {gameScore}
+            </Text>
+         </View>
+
+         <View style={{ flex: 1 }}>
+            <Pressable
+               onPress={() => resetGame()}
+               unstable_pressDelay={100}
+               style={({ pressed }) => [
+                  {
+                     backgroundColor: pressed
+                        ? "rgb(210, 230, 255)"
+                        : "darkblue", // #579257
+                     // : "rgb(50,205,50)", // #579257
+                  },
+                  styles.button,
+                  { borderRadius: 20, width: 270, height: 80 },
+               ]}
+            >
+               <Text
+                  style={[
+                     styles.findStationsButtonLabel,
+                     { fontSize: 30, letterSpacing: 3 },
+                  ]}
+               >
+                  PLAY AGAIN
+               </Text>
+            </Pressable>
+         </View>
+
+         <View style={{ flex: 1 }}>
+            <Pressable
+               onPress={() => navigation.navigate("Home")}
+               unstable_pressDelay={100}
+               style={({ pressed }) => [
+                  {
+                     backgroundColor: pressed
+                        ? "rgb(210, 230, 255)"
+                        : "rgb(83,104,120)", // #579257
+                  },
+                  styles.button,
+                  { borderRadius: 20, width: 200, height: 60 },
+               ]}
+            >
+               <Text
+                  style={[
+                     styles.findStationsButtonLabel,
+                     { fontSize: 30, letterSpacing: 3 },
+                  ]}
+               >
+                  QUIT
+               </Text>
+            </Pressable>
+         </View>
       </View>
    );
-
-   // // PLAYING AROUND
-   // useEffect(() => {
-   //    // console.log("render");
-   // });
 
    function nextLevel() {
       // levelCounter = level + 1;
@@ -223,25 +272,6 @@ export function GameScreen({ navigation }) {
 
    const myInterval = useRef(undefined);
    let counter;
-
-   // function countDownStart() {
-   //    setGameOver(false);
-   //    counter = countdownValue;
-   //    myInterval.current = setInterval(() => {
-   //       counter -= 1;
-   //       setCountdown(counter);
-   //       console.log(counter);
-   //       if (counter == 0) {
-   //          setGameOver(true);
-   //          countDownStop();
-   //       }
-   //    }, 1000);
-   // }
-
-   // function countDownStop() {
-   //    // console.log("in function 'countDownStop()'");
-   //    clearInterval(myInterval.current);
-   // }
 
    function countDownOn(toRun) {
       function start() {
@@ -282,13 +312,6 @@ export function GameScreen({ navigation }) {
 
       // clear proposedWord, entered by user
       setProposedWord("");
-
-      // console.log(
-      //    "|||||| in fetchButtonPressed(), level=",
-      //    level,
-      //    "levelCounter=",
-      //    levelCounter
-      // );
 
       // set word length based on level: L1_to_L3: wL=4; L4_to_L6: wL=5; ...
       // let wordLength = Math.ceil(levelCounter / 3) + 3;
@@ -391,9 +414,6 @@ export function GameScreen({ navigation }) {
       // reset 'wasPressed' status of letter buttons
       resetLetterButtons();
    }
-
-   // console.log("countdownOn: " + countdownOn);
-   // console.log("countdownValue: " + countdown);
 
    return (
       <View style={styles.container}>
@@ -604,36 +624,11 @@ export function GameScreen({ navigation }) {
          </View>
 
          {/* 'Button' to re-shuffle the available letters */}
-         <View style={[styles.segment, { flex: 1, backgroundColor: "red" }]}>
-            {/* <Pressable
-               unstable_pressDelay={100}
-               onPress={() => {
-                  reshuffleButtonPressed();
-               }}
-               style={({ pressed }) => [
-                  {
-                     backgroundColor: pressed
-                        ? "rgb(250, 227, 158)"
-                        : "rgb(230, 180, 20)",
-                  },
-                  styles.button,
-                  { width: "25%" },
-               ]}
-            >
-               <Text style={styles.findStationsButtonLabel}>Re-Shuffle</Text>
-               <Image
-                  source={require("../assets/pngwing-refresh.png")}
-                  style={{
-                     width: "75%",
-                     height: "75%",
-                     resizeMode: "contain",
-                  }}
-               ></Image>
-            </Pressable> */}
-         </View>
+         <View
+            style={[styles.segment, { flex: 1, backgroundColor: "red" }]}
+         ></View>
 
          {/* PLAYING AROUND */}
-         {/* <GameOver title="Title" showButton={false} /> */}
          {(levelStart || gameOver || levelCleared) && <OverlayPrime />}
 
          {levelStart && <LevelStart title="READY TO START" showButton={true} />}
@@ -686,7 +681,7 @@ const styles = StyleSheet.create({
       backgroundColor: "rgba(255, 255, 255, 0.75)",
    },
 
-   overlayScreen: {
+   LevelStartOverlayScreen: {
       position: "absolute",
       // top: 0,
       // left: 0,
@@ -700,6 +695,49 @@ const styles = StyleSheet.create({
       // height: Dimensions.get("window").height,
 
       // backgroundColor: "rgba(255, 255, 255, 0.75)",
+      backgroundColor: "rgba(95, 158, 160, 0.8)",
+      justifyContent: "center",
+      alignItems: "center",
+      flexDirection: "column",
+
+      borderRadius: 20,
+   },
+
+   LevelClearedOverlayScreen: {
+      position: "absolute",
+      // top: 0,
+      // left: 0,
+
+      top: (Dimensions.get("screen").height * (1 - 0.8)) / 2,
+      left: (Dimensions.get("screen").width * (1 - 0.8)) / 2,
+
+      height: Dimensions.get("screen").height * 0.8,
+      width: Dimensions.get("screen").width * 0.8,
+      // width: Dimensions.get("window").width,
+      // height: Dimensions.get("window").height,
+
+      // backgroundColor: "rgba(255, 255, 255, 0.75)",
+      backgroundColor: "rgba(252, 194, 0, 0.8)",
+      justifyContent: "center",
+      alignItems: "center",
+      flexDirection: "column",
+
+      borderRadius: 20,
+   },
+
+   GameOverOverlayScreen: {
+      position: "absolute",
+      // top: 0,
+      // left: 0,
+
+      top: (Dimensions.get("screen").height * (1 - 0.8)) / 2,
+      left: (Dimensions.get("screen").width * (1 - 0.8)) / 2,
+
+      height: Dimensions.get("screen").height * 0.8,
+      width: Dimensions.get("screen").width * 0.8,
+      // width: Dimensions.get("window").width,
+      // height: Dimensions.get("window").height,
+
       backgroundColor: "rgba(255, 55, 155, 0.8)",
       justifyContent: "center",
       alignItems: "center",
@@ -712,9 +750,8 @@ const styles = StyleSheet.create({
       flex: 1,
       width: "100%",
       alignItems: "center",
-      // flexWrap: "wrap",
-      // justifyContent: "center",
    },
+
    button: {
       width: 300,
       height: 90,
@@ -723,30 +760,11 @@ const styles = StyleSheet.create({
       borderRadius: 10,
    },
 
-   solutionArea: {
-      width: 400,
-      height: 150,
-      alignItems: "center",
-      justifyContent: "center",
-      borderRadius: 5,
-   },
-
    flatListButton: {
-      // backgroundColor: "rgb(0, 0, 102)",
-      // width: 60,
-      // height: 60,
       width: 70,
       height: 70,
       margin: 7,
       borderRadius: 10,
-
-      // width: 80,
-      // width: windowWidth * 0.2,
-      // height: windowWidth * 0.2,
-      // borderWidth: 3,
-      // borderColor: "red",
-      // borderRadius: windowWidth*0.2,
-      // margin: buttonWidth * 0.1,
       alignItems: "center",
       justifyContent: "center",
    },
@@ -754,43 +772,12 @@ const styles = StyleSheet.create({
    flatListButtonText: {
       color: "#fdfdfd",
       fontFamily: "Nunito_700Bold",
-      // fontSize: 24,
       fontSize: 35,
-   },
-
-   letterButton: {
-      // backgroundColor: "rgb(0, 0, 102)",
-      width: 70,
-      height: 70,
-      borderRadius: 5,
-      // width: 80,
-      // width: windowWidth * 0.2,
-      // height: windowWidth * 0.2,
-      // borderWidth: 3,
-      // borderColor: "red",
-      // borderRadius: windowWidth*0.2,
-      // margin: buttonWidth * 0.1,
-      alignItems: "center",
-      justifyContent: "center",
    },
 
    findStationsButtonLabel: {
       color: "#fdfdfd",
       fontFamily: "Nunito_700Bold",
       fontSize: 24,
-   },
-
-   aboutMeButtonLabel: {
-      color: "#fdfdfd",
-      fontFamily: "Nunito_400Regular",
-      fontSize: 22,
-   },
-   row: {
-      width: "100%",
-      // backgroundColor: "black",
-      flexDirection: "row",
-      justifyContent: "space-evenly",
-      paddingTop: 10,
-      paddingBottom: 10,
    },
 });

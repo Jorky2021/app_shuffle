@@ -1,4 +1,5 @@
 import {
+   Image,
    ImageBackground,
    Pressable,
    StyleSheet,
@@ -15,16 +16,27 @@ export function HomeScreen({ navigation }) {
             style={{ width: "100%", height: "100%" }}
             resizeMode="cover"
          >
+            <Image
+               source={require("../assets/abc-block.png")}
+               style={[
+                  styles.segment,
+                  {
+                     flex: 1,
+                     top: "7%",
+                     width: "90%",
+                     height: "100%",
+                     resizeMode: "contain",
+                  },
+               ]}
+            ></Image>
+
             {/* 'Button' to navigate to Game page */}
             <View
                style={[
                   styles.segment,
                   {
                      flex: 2,
-                     top: "20%",
-                     // justifyContent: "center",
-
-                     // backgroundColor: "red",
+                     top: "15%",
                   },
                ]}
             >
@@ -35,27 +47,19 @@ export function HomeScreen({ navigation }) {
                      {
                         backgroundColor: pressed
                            ? "rgb(210, 230, 255)"
-                           : "#32cd32",
-                        // : "#006ab7",
+                           : "rgb(0,127,92)",
+                        // : "#32cd32",
+                        //   "#006ab7",
                      },
-                     styles.button,
-                     { height: 125, borderColor: "#006699" },
+                     styles.startGameButton,
                   ]}
                >
-                  <Text style={styles.startGameButtonLabel}>Start Game</Text>
+                  <Text style={styles.startGameButtonLabel}>PLAY GAME</Text>
                </Pressable>
             </View>
 
             {/* 'Button' to navigate to the Hall of Fame page */}
-            <View
-               style={[
-                  styles.segment,
-                  {
-                     flex: 1,
-                     backgroundColor: "yellow",
-                  },
-               ]}
-            >
+            <View style={[styles.segment]}>
                <Pressable
                   onPress={() => navigation.navigate("Hall of Fame")}
                   unstable_pressDelay={100}
@@ -65,18 +69,15 @@ export function HomeScreen({ navigation }) {
                            ? "rgb(210, 230, 255)"
                            : "rgb(238,230,255)", // #579257
                      },
-                     styles.button,
-                     { height: 100 },
+                     styles.otherButton,
                   ]}
                >
-                  <Text style={styles.aboutMeButtonLabel}>Hall of Fame</Text>
+                  <Text style={styles.otherButtonLabel}>HALL OF FAME</Text>
                </Pressable>
             </View>
 
             {/* 'Button' to navigate to How It Works page */}
-            <View
-               style={[styles.segment, { flex: 1, backgroundColor: "green" }]}
-            >
+            <View style={[styles.segment]}>
                <Pressable
                   onPress={() => navigation.navigate("How It Works")}
                   unstable_pressDelay={100}
@@ -86,11 +87,10 @@ export function HomeScreen({ navigation }) {
                            ? "rgb(210, 230, 255)"
                            : "#ffdeb4", // ffdeb4
                      },
-                     styles.button,
-                     { height: 100 },
+                     styles.otherButton,
                   ]}
                >
-                  <Text style={styles.howItWorksButtonLabel}>How It Works</Text>
+                  <Text style={styles.otherButtonLabel}>INSTRUCTIONS</Text>
                </Pressable>
             </View>
          </ImageBackground>
@@ -104,34 +104,46 @@ const styles = StyleSheet.create({
       flexDirection: "column",
       justifyContent: "center",
    },
+
    segment: {
       flex: 1,
       width: "100%",
       alignItems: "center",
    },
-   button: {
+
+   startGameButton: {
       width: 300,
-      height: 75,
+      height: 120,
       alignItems: "center",
       justifyContent: "center",
-      borderRadius: 15,
+      borderRadius: 20,
    },
 
    startGameButtonLabel: {
       // color: "#fdfdfd",
       color: "black",
       fontFamily: "Nunito_700Bold",
-      fontSize: 40,
+      fontSize: 42,
    },
-   howItWorksButtonLabel: {
+
+   otherButton: {
+      width: 250,
+      height: 100,
+      alignItems: "center",
+      justifyContent: "center",
+      borderRadius: 15,
+   },
+
+   otherButtonLabel: {
       color: "black",
-      fontFamily: "Nunito_400Regular",
-      fontSize: 30,
+      fontFamily: "Nunito_700Bold",
+      fontSize: 28,
    },
-   aboutMeButtonLabel: {
-      // color: "#fdfdfd",
-      color: "black",
-      fontFamily: "Nunito_400Regular",
-      fontSize: 30,
-   },
+
+   // aboutMeButtonLabel: {
+   //    // color: "#fdfdfd",
+   //    color: "black",
+   //    fontFamily: "Nunito_700Bold",
+   //    fontSize: 30,
+   // },
 });
