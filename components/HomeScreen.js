@@ -16,7 +16,18 @@ export function HomeScreen({ navigation }) {
             resizeMode="cover"
          >
             {/* 'Button' to navigate to Game page */}
-            <View style={[styles.segment, { flex: 6, paddingTop: 110 }]}>
+            <View
+               style={[
+                  styles.segment,
+                  {
+                     flex: 2,
+                     top: "20%",
+                     // justifyContent: "center",
+
+                     // backgroundColor: "red",
+                  },
+               ]}
+            >
                <Pressable
                   onPress={() => navigation.navigate("Game")}
                   unstable_pressDelay={100}
@@ -24,18 +35,48 @@ export function HomeScreen({ navigation }) {
                      {
                         backgroundColor: pressed
                            ? "rgb(210, 230, 255)"
-                           : "#006ab7",
+                           : "#32cd32",
+                        // : "#006ab7",
                      },
                      styles.button,
-                     { borderColor: "#006699" },
+                     { height: 125, borderColor: "#006699" },
                   ]}
                >
-                  <Text style={styles.findStationsButtonLabel}>Start Game</Text>
+                  <Text style={styles.startGameButtonLabel}>Start Game</Text>
+               </Pressable>
+            </View>
+
+            {/* 'Button' to navigate to the Hall of Fame page */}
+            <View
+               style={[
+                  styles.segment,
+                  {
+                     flex: 1,
+                     backgroundColor: "yellow",
+                  },
+               ]}
+            >
+               <Pressable
+                  onPress={() => navigation.navigate("Hall of Fame")}
+                  unstable_pressDelay={100}
+                  style={({ pressed }) => [
+                     {
+                        backgroundColor: pressed
+                           ? "rgb(210, 230, 255)"
+                           : "rgb(238,230,255)", // #579257
+                     },
+                     styles.button,
+                     { height: 100 },
+                  ]}
+               >
+                  <Text style={styles.aboutMeButtonLabel}>Hall of Fame</Text>
                </Pressable>
             </View>
 
             {/* 'Button' to navigate to How It Works page */}
-            <View style={[styles.segment, { flex: 1 }]}>
+            <View
+               style={[styles.segment, { flex: 1, backgroundColor: "green" }]}
+            >
                <Pressable
                   onPress={() => navigation.navigate("How It Works")}
                   unstable_pressDelay={100}
@@ -46,29 +87,10 @@ export function HomeScreen({ navigation }) {
                            : "#ffdeb4", // ffdeb4
                      },
                      styles.button,
+                     { height: 100 },
                   ]}
                >
                   <Text style={styles.howItWorksButtonLabel}>How It Works</Text>
-               </Pressable>
-            </View>
-
-            {/* 'Button' to navigate to About Us page */}
-            <View
-               style={[styles.segment, { flex: 3, justifyContent: "center" }]}
-            >
-               <Pressable
-                  onPress={() => navigation.navigate("About Us")}
-                  unstable_pressDelay={100}
-                  style={({ pressed }) => [
-                     {
-                        backgroundColor: pressed
-                           ? "rgb(210, 230, 255)"
-                           : "#579257", // #579257
-                     },
-                     styles.button,
-                  ]}
-               >
-                  <Text style={styles.aboutMeButtonLabel}>About Us</Text>
                </Pressable>
             </View>
          </ImageBackground>
@@ -95,19 +117,21 @@ const styles = StyleSheet.create({
       borderRadius: 15,
    },
 
-   findStationsButtonLabel: {
-      color: "#fdfdfd",
+   startGameButtonLabel: {
+      // color: "#fdfdfd",
+      color: "black",
       fontFamily: "Nunito_700Bold",
-      fontSize: 24,
+      fontSize: 40,
    },
    howItWorksButtonLabel: {
       color: "black",
       fontFamily: "Nunito_400Regular",
-      fontSize: 22,
+      fontSize: 30,
    },
    aboutMeButtonLabel: {
-      color: "#fdfdfd",
+      // color: "#fdfdfd",
+      color: "black",
       fontFamily: "Nunito_400Regular",
-      fontSize: 22,
+      fontSize: 30,
    },
 });

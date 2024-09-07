@@ -36,7 +36,7 @@ import { GameScreen } from "./components/GameScreen";
 // import { StationListScreen } from "./components/zzz-StationListScreen";
 // import { StationDetailsScreen } from "./components/zzz-StationDetailsScreen";
 import { HowItWorksScreen } from "./components/HowItWorksScreen";
-import { AboutUsScreen } from "./components/AboutUsScreen";
+import { AboutUsScreen, HallOfFameScreen } from "./components/HallOfFameScreen";
 
 import { generate, count } from "random-words";
 import { HomeScreen } from "./components/HomeScreen";
@@ -74,10 +74,11 @@ function App() {
          <Stack.Navigator
             initialRouteName="Home"
             screenOptions={{
-               headerTitleStyle: {
-                  fontWeight: "bold",
-               },
-               headerRight: (props) => <LogoTitle {...props} />,
+               headerShown: false,
+               //    headerTitleStyle: {
+               //       fontWeight: "bold",
+               //    },
+               //    headerRight: (props) => <LogoTitle {...props} />,
             }}
          >
             <Stack.Screen name="Home" component={HomeScreen} />
@@ -91,8 +92,16 @@ function App() {
                name="Station Details"
                component={StationDetailsScreen}
             /> */}
-            <Stack.Screen name="How It Works" component={HowItWorksScreen} />
-            <Stack.Screen name="About Us" component={AboutUsScreen} />
+            <Stack.Screen
+               name="How It Works"
+               component={HowItWorksScreen}
+               options={{ headerShown: true }}
+            />
+            <Stack.Screen
+               name="Hall of Fame"
+               component={HallOfFameScreen}
+               options={{ headerShown: true }}
+            />
          </Stack.Navigator>
       </NavigationContainer>
    );

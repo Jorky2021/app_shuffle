@@ -70,9 +70,12 @@ export function GameScreen({ navigation }) {
    // set up countdown timer
    const [countdown, setCountdown] = useState(countdownValue);
 
+   // Screen for basic layer overlay
+   const OverlayPrime = () => <View style={styles.overlayPrimeScreen} />;
+
    // Screen for LevelStart overlay
    const LevelStart = ({ title, showButton }) => (
-      <View style={styles.clearScreen}>
+      <View style={styles.overlayScreen}>
          <Text style={{ fontSize: 50 }}>{title}</Text>
          <Text style={{ fontSize: 30 }}>LEVEL: {level}</Text>
          {/* <Text style={{ fontSize: 30 }}>SCORE: {gameScore}</Text> */}
@@ -89,7 +92,7 @@ export function GameScreen({ navigation }) {
 
    // Screen for GameOver overlay
    const GameOver = ({ title, showButton }) => (
-      <View style={styles.clearScreen}>
+      <View style={styles.overlayScreen}>
          <Text style={{ fontSize: 40 }}>{title}</Text>
          {/* <Text style={{ fontSize: 30 }}>LEVEL: {level}</Text> */}
          <Text style={{ fontSize: 30 }}>SCORE: {gameScore}</Text>
@@ -110,7 +113,7 @@ export function GameScreen({ navigation }) {
 
    // Screen for Level completed overlay
    const LevelCleared = ({ title, showButton }) => (
-      <View style={styles.clearScreen}>
+      <View style={styles.overlayScreen}>
          <Text style={{ fontSize: 60, color: "green" }}>{title}</Text>
          {showButton && (
             <Button
@@ -448,24 +451,6 @@ export function GameScreen({ navigation }) {
             </Pressable>
          </View>
 
-         {/* 'Button' to navigate to the Leaderboard page */}
-         <View style={[styles.segment, { flex: 2, justifyContent: "center" }]}>
-            <Pressable
-               // onPress={() => navigation.navigate("About Us")}
-               unstable_pressDelay={100}
-               style={({ pressed }) => [
-                  {
-                     backgroundColor: pressed
-                        ? "rgb(210, 230, 255)"
-                        : "rgb(238,230,255)",
-                  },
-                  styles.button,
-               ]}
-            >
-               <Text style={styles.howItWorksButtonLabel}>Leaderboard</Text>
-            </Pressable>
-         </View>
-
          {/* Area to display letters / keyboard */}
          {/* <View style={[styles.segment, { flex: 2 }]}> */}
          {/* <View style={[styles.row, { flex: 2 }]}> */}
@@ -494,6 +479,8 @@ export function GameScreen({ navigation }) {
 
          {/* PLAYING AROUND */}
          {/* <GameOver title="Title" showButton={false} /> */}
+         {(levelStart || gameOver || levelCleared) && <OverlayPrime />}
+
          {levelStart && <LevelStart title="READY TO START" showButton={true} />}
          {gameOver && <GameOver title="GAME OVER" showButton={true} />}
          {levelCleared && (
@@ -510,13 +497,23 @@ const styles = StyleSheet.create({
       justifyContent: "center",
    },
 
-   clearScreen: {
+   overlayPrimeScreen: {
       position: "absolute",
-      top: 0,
-      left: 0,
+      width: "100%",
+      height: "100%",
+      backgroundColor: "rgba(255, 255, 255, 0.5)",
+   },
 
-      width: Dimensions.get("screen").width,
-      height: Dimensions.get("screen").height,
+   overlayScreen: {
+      position: "absolute",
+      // top: 0,
+      // left: 0,
+
+      top: (Dimensions.get("screen").height * (1 - 0.8)) / 2,
+      left: (Dimensions.get("screen").width * (1 - 0.8)) / 2,
+
+      height: Dimensions.get("screen").height * 0.8,
+      width: Dimensions.get("screen").width * 0.8,
       // width: Dimensions.get("window").width,
       // height: Dimensions.get("window").height,
 
@@ -524,6 +521,8 @@ const styles = StyleSheet.create({
       justifyContent: "center",
       alignItems: "center",
       flexDirection: "column",
+
+      borderRadius: 20,
    },
 
    segment: {
