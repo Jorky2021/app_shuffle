@@ -3,6 +3,7 @@ import {
    Dimensions,
    FlatList,
    FlatListComponent,
+   Image,
    ImageBackground,
    Pressable,
    StyleSheet,
@@ -53,7 +54,7 @@ export function GameScreen({ navigation }) {
    let validWords = [];
    let shuffled = [];
    // let levelCounter = 1;
-   let countdownValue = 12;
+   let countdownValue = 60;
 
    // create state elements
    const [targetWord, setTargetWord] = useState("");
@@ -368,7 +369,9 @@ export function GameScreen({ navigation }) {
 
             <View style={[styles.statusBox]}>
                <Text style={[styles.statusBoxTextBold]}>TIME</Text>
-               <Text style={[styles.statusBoxTextBold]}>{countdown}</Text>
+               <Text style={[styles.statusBoxTextBold, { fontSize: 25 }]}>
+                  {countdown}
+               </Text>
             </View>
 
             <View style={[styles.statusBox]}>
@@ -378,34 +381,58 @@ export function GameScreen({ navigation }) {
          </View>
 
          {/* Solution GRID area */}
-         <View style={[styles.segment, { flex: 3, justifyContent: "center" }]}>
-            <Pressable
-               // onPress={() => navigation.navigate("About Us")}
-               unstable_pressDelay={100}
-               style={({ pressed }) => [
+         <View
+            style={
+               ([styles.segment],
+               {
+                  flex: 3,
+                  backgroundColor: "pink",
+                  justifyContent: "center",
+                  alignItems: "center",
+               })
+            }
+         >
+            <View
+               style={[
                   {
-                     backgroundColor: pressed
-                        ? "rgb(239,222,205)"
-                        : "rgb(239,222,205)",
+                     width: "95%",
+                     height: "40%",
+                     backgroundColor: "green",
+                     justifyContent: "center",
+                     alignItems: "center",
+                     borderRadius: 20,
                   },
-                  styles.solutionArea,
                ]}
             >
-               {/* <Text style={styles.howItWorksButtonLabel}>Level: {level}</Text>
-
-               <Text style={styles.howItWorksButtonLabel}>
-                  Remaining time: {countdown}
+               <Text style={[styles.proposedText, { letterSpacing: 3 }]}>
+                  {proposedWord}
                </Text>
-               <Text style={styles.howItWorksButtonLabel}>
-                  SCORE count: {gameScore}
-               </Text> */}
-               <Text style={styles.howItWorksButtonLabel}>{proposedWord}</Text>
-            </Pressable>
+            </View>
          </View>
 
          {/* Display buttons of shuffled word */}
-         <View style={[styles.segment, { flex: 2, justifyContent: "center" }]}>
+         <View
+            style={[
+               styles.segment,
+               {
+                  flex: 3,
+                  backgroundColor: "red",
+                  justifyContent: "space-evenly",
+                  alignItems: "center",
+                  // flexWrap: "wrap",
+               },
+            ]}
+         >
             <FlatList
+               contentContainerStyle={{
+                  width: "100%",
+                  backgroundColor: "orange",
+                  justifyContent: "space-evenly",
+                  // justifyContent: "space-around",
+                  flexWrap: "wrap",
+                  alignContent: "center",
+                  alignItems: "center",
+               }}
                horizontal={true}
                // data={DATA}
                // data={shuffled}
@@ -441,27 +468,17 @@ export function GameScreen({ navigation }) {
          </View>
 
          {/* 'ENTER' Button */}
-         <View style={[styles.segment, { flex: 2 }]}>
-            <Pressable
-               unstable_pressDelay={100}
-               onPress={() => {
-                  enterButtonPressed();
-               }}
-               style={({ pressed }) => [
-                  {
-                     backgroundColor: pressed
-                        ? "rgb(160, 219, 178)"
-                        : "rgb(60, 194, 100)",
-                  },
-                  styles.button,
-               ]}
-            >
-               <Text style={styles.findStationsButtonLabel}>E N T E R</Text>
-            </Pressable>
-         </View>
-
-         {/* 'Button' to re-shuffle the available letters */}
-         <View style={[styles.segment, { flex: 2 }]}>
+         <View
+            style={[
+               styles.segment,
+               {
+                  flex: 2,
+                  backgroundColor: "black",
+                  flexDirection: "row",
+                  justifyContent: "space-evenly",
+               },
+            ]}
+         >
             <Pressable
                unstable_pressDelay={100}
                onPress={() => {
@@ -474,10 +491,73 @@ export function GameScreen({ navigation }) {
                         : "rgb(230, 180, 20)",
                   },
                   styles.button,
+                  { width: "20%", height: "50%" },
+               ]}
+            >
+               {/* <Text style={styles.findStationsButtonLabel}>Re-Shuffle</Text> */}
+               <Image
+                  source={require("../assets/pngwing-refresh.png")}
+                  style={{
+                     width: "75%",
+                     height: "75%",
+                     resizeMode: "contain",
+                  }}
+               ></Image>
+            </Pressable>
+
+            <Pressable
+               unstable_pressDelay={100}
+               onPress={() => {
+                  enterButtonPressed();
+               }}
+               style={({ pressed }) => [
+                  {
+                     backgroundColor: pressed
+                        ? "rgb(160, 219, 178)"
+                        : "rgb(60, 194, 100)",
+                  },
+                  styles.button,
+                  { width: "60%", height: "70%" },
+               ]}
+            >
+               <Text
+                  style={[
+                     styles.findStationsButtonLabel,
+                     { fontSize: 50, letterSpacing: 5 },
+                  ]}
+               >
+                  ENTER
+               </Text>
+            </Pressable>
+         </View>
+
+         {/* 'Button' to re-shuffle the available letters */}
+         <View style={[styles.segment, { flex: 1, backgroundColor: "red" }]}>
+            {/* <Pressable
+               unstable_pressDelay={100}
+               onPress={() => {
+                  reshuffleButtonPressed();
+               }}
+               style={({ pressed }) => [
+                  {
+                     backgroundColor: pressed
+                        ? "rgb(250, 227, 158)"
+                        : "rgb(230, 180, 20)",
+                  },
+                  styles.button,
+                  { width: "25%" },
                ]}
             >
                <Text style={styles.findStationsButtonLabel}>Re-Shuffle</Text>
-            </Pressable>
+               <Image
+                  source={require("../assets/pngwing-refresh.png")}
+                  style={{
+                     width: "75%",
+                     height: "75%",
+                     resizeMode: "contain",
+                  }}
+               ></Image>
+            </Pressable> */}
          </View>
 
          {/* Area to display letters / keyboard */}
@@ -547,6 +627,12 @@ const styles = StyleSheet.create({
       fontSize: 24,
    },
 
+   proposedText: {
+      color: "blue",
+      fontFamily: "Nunito_700Bold",
+      fontSize: 60,
+   },
+
    overlayPrimeScreen: {
       position: "absolute",
       width: "100%",
@@ -580,10 +666,12 @@ const styles = StyleSheet.create({
       flex: 1,
       width: "100%",
       alignItems: "center",
+      // flexWrap: "wrap",
+      // justifyContent: "center",
    },
    button: {
       width: 300,
-      height: 75,
+      height: 90,
       alignItems: "center",
       justifyContent: "center",
       borderRadius: 10,
@@ -599,10 +687,12 @@ const styles = StyleSheet.create({
 
    flatListButton: {
       // backgroundColor: "rgb(0, 0, 102)",
-      width: 60,
-      height: 60,
+      // width: 60,
+      // height: 60,
+      width: 70,
+      height: 70,
       margin: 7,
-      borderRadius: 5,
+      borderRadius: 10,
 
       // width: 80,
       // width: windowWidth * 0.2,
@@ -618,7 +708,8 @@ const styles = StyleSheet.create({
    flatListButtonText: {
       color: "#fdfdfd",
       fontFamily: "Nunito_700Bold",
-      fontSize: 24,
+      // fontSize: 24,
+      fontSize: 35,
    },
 
    letterButton: {
