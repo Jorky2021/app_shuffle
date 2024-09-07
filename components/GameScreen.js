@@ -54,7 +54,7 @@ export function GameScreen({ navigation }) {
    let validWords = [];
    let shuffled = [];
    // let levelCounter = 1;
-   let countdownValue = 60;
+   let countdownValue = 30;
 
    // create state elements
    const [targetWord, setTargetWord] = useState("");
@@ -77,17 +77,52 @@ export function GameScreen({ navigation }) {
    // Screen for LevelStart overlay
    const LevelStart = ({ title, showButton }) => (
       <View style={styles.overlayScreen}>
-         <Text style={{ fontSize: 50 }}>{title}</Text>
-         <Text style={{ fontSize: 30 }}>LEVEL: {level}</Text>
-         {/* <Text style={{ fontSize: 30 }}>SCORE: {gameScore}</Text> */}
-         {showButton && (
-            <Button
-               title="Start Now!"
-               onPress={() => {
-                  fetchButtonPressed();
+         <Image
+            source={require("../assets/level-up.png")}
+            style={{
+               flex: 3,
+               width: "60%",
+               height: "60%",
+               resizeMode: "contain",
+            }}
+         ></Image>
+
+         <View style={{ flex: 1 }}>
+            <Text
+               style={{
+                  fontSize: 55,
+                  fontFamily: "Nunito_700Bold",
                }}
-            />
-         )}
+            >
+               LEVEL {level}
+            </Text>
+         </View>
+
+         <View style={{ flex: 2 }}>
+            <Pressable
+               onPress={() => fetchButtonPressed()}
+               unstable_pressDelay={100}
+               style={({ pressed }) => [
+                  {
+                     backgroundColor: pressed
+                        ? "rgb(210, 230, 255)"
+                        : "darkblue", // #579257
+                     // : "rgb(238,230,255)", // #579257
+                  },
+                  styles.button,
+                  { borderRadius: 20, width: 200, height: 70 },
+               ]}
+            >
+               <Text
+                  style={[
+                     styles.findStationsButtonLabel,
+                     { fontSize: 40, letterSpacing: 3 },
+                  ]}
+               >
+                  Go!
+               </Text>
+            </Pressable>
+         </View>
       </View>
    );
 
@@ -560,32 +595,6 @@ export function GameScreen({ navigation }) {
             </Pressable> */}
          </View>
 
-         {/* Area to display letters / keyboard */}
-         {/* <View style={[styles.segment, { flex: 2 }]}> */}
-         {/* <View style={[styles.row, { flex: 2 }]}> */}
-         {/* <View style={styles.letterButton}> */}
-         {/* </View> */}
-
-         {/* <Pressable
-               // onPress={() => navigation.navigate("How It Works")}
-               // onPress={() =>
-               //    Alert.alert(generate({ minLength: 5, maxLength: 5 }))
-               // }
-               unstable_pressDelay={100}
-               style={({ pressed }) => [
-                  {
-                     backgroundColor: pressed
-                        ? "rgb(153, 153, 255)"
-                        : "rgb(0, 0, 102)", // ffdeb4
-                  },
-                  styles.letterButton,
-               ]}
-            >
-               <Text style={styles.findStationsButtonLabel}>L2</Text>
-            </Pressable> */}
-
-         {/* </View> */}
-
          {/* PLAYING AROUND */}
          {/* <GameOver title="Title" showButton={false} /> */}
          {(levelStart || gameOver || levelCleared) && <OverlayPrime />}
@@ -637,7 +646,7 @@ const styles = StyleSheet.create({
       position: "absolute",
       width: "100%",
       height: "100%",
-      backgroundColor: "rgba(255, 255, 255, 0.5)",
+      backgroundColor: "rgba(255, 255, 255, 0.75)",
    },
 
    overlayScreen: {
@@ -654,7 +663,7 @@ const styles = StyleSheet.create({
       // height: Dimensions.get("window").height,
 
       // backgroundColor: "rgba(255, 255, 255, 0.75)",
-      backgroundColor: "rgba(255, 55, 155, 0.75)",
+      backgroundColor: "rgba(255, 55, 155, 0.8)",
       justifyContent: "center",
       alignItems: "center",
       flexDirection: "column",
