@@ -50,7 +50,6 @@ export function GameScreen({ navigation }) {
    let permutations = [];
    let validWords = [];
    let shuffled = [];
-   // let levelCounter = 1;
    let countdownValue = 60;
 
    // create state elements
@@ -63,16 +62,151 @@ export function GameScreen({ navigation }) {
    const [levelStart, setLevelStart] = useState(true);
    const [gameOver, setGameOver] = useState(false);
    const [levelCleared, setLevelCleared] = useState(false);
-   // const [letterPressed, setLetterPressed] = useState(false);
-
-   // set up countdown timer
    const [countdown, setCountdown] = useState(countdownValue);
+
+   function nextLevel() {
+      setLevel(level + 1);
+      setLevelCleared(false);
+      setLevelStart(true);
+   }
+
+   function resetGame() {
+      setGameOver(false);
+      setLevel(1);
+      setGameScore(0);
+      setLevelStart(true);
+      // fetchButtonPressed();
+   }
+
+   const myInterval = useRef(undefined);
+   let counter;
+
+   function countDownOn(toRun) {
+      function start() {
+         setGameOver(false);
+         counter = countdownValue;
+         myInterval.current = setInterval(() => {
+            counter -= 1;
+            setCountdown(counter);
+            if (counter == 0) {
+               setGameOver(true);
+               stop();
+            }
+         }, 1000);
+      }
+
+      function stop() {
+         clearInterval(myInterval.current);
+      }
+
+      if (toRun) {
+         start();
+      }
+
+      if (!toRun) {
+         stop();
+      }
+   }
+
+   function fetchButtonPressed() {
+      setLevelStart(false);
+      setCountdown(countdownValue); // reset countdown
+      countDownOn(true);
+      setProposedWord(""); // clear proposedWord, entered by user
+
+      // set word length based on level: L1_to_L3: wL=4; L4_to_L6: wL=5; and so on
+      let wordLength = Math.ceil(level / 3) + 3;
+
+      // 1 - Fetch a word
+      fetchedWord = ShuffleMechs.fetchWord(wordLength, wordLength);
+      setTargetWord(fetchedWord);
+      console.log("1 - fetchedWord: " + fetchedWord);
+
+      // 2 - Generate all COMBINATIONS of a word, then only keep the ones with length >= 3
+      combinations = ShuffleMechs.combinations(fetchedWord);
+      // console.log("2 - combinations:");
+
+      // 3 - Find all PERMUTATIONS of a string in javascript
+      permutations = ShuffleMechs.allPermutations(combinations);
+      // console.log("3 - All permutations of fetchedWord:");
+
+      // 4 - Find all valid WORDS in the permutations
+      validWords = ShuffleMechs.createWordList(permutations);
+      // console.log("4 - Valid words in permutations of fetchedWord:");
+      // console.log(validWords);
+
+      // 4a - use useState to update wordList
+      setWordList(validWords);
+      // console.log("4a - wordList:");
+
+      // 5 - Get an array with shuffled letters of the fetchedWord
+      shuffled = ShuffleMechs.shuffleLetters(fetchedWord);
+      // console.log("5 - Shuffled letters:");
+      // console.log(shuffled);
+
+      // 5a - use useState to update shuffledWord
+      setShuffledWord(shuffled);
+
+      // Alert.alert("Fetched word: " + fetchedWord);
+   }
+
+   function resetLetterButtons() {
+      // Reset the status of all letter buttons to Available to press
+      if (shuffledWord != null) {
+         for (let i = 0; i < shuffledWord.length; i++) {
+            shuffledWord[i].wasPressed = false;
+         }
+      }
+   }
+
+   function flatListButtonPressed(value) {
+      setProposedWord(proposedWord + value);
+      // Alert.alert(value + proposedWord);
+   }
+
+   function enterButtonPressed() {
+      // only check if at least 3 letters have been entered
+      if (proposedWord.length > 2) {
+         let validated = ShuffleMechs.validateSubmission(
+            proposedWord,
+            targetWord,
+            wordList
+         );
+         if (validated.won) {
+            countDownOn(false);
+            setLevelCleared(true); // set flag to display 'Level cleared' component
+         }
+         setGameScore(gameScore + validated.score);
+      }
+      setProposedWord(""); // clear proposedWord entered
+      resetLetterButtons(); // reset 'wasPressed' status of letter buttons
+   }
+
+   function reshuffleButtonPressed() {
+      console.log(
+         ">>> in function 'reshuffleButtonPressed, var 'shuffledWord' = " +
+            shuffledWord
+      );
+      // create a single string from the current array 'shuffled' from objed items 'letter'
+      let currentShuffleString = "";
+      for (let i = 0; i < shuffledWord.length; i++) {
+         currentShuffleString += shuffledWord[i].letter;
+      }
+      // 5 - Get an array with shuffled letters of the submitted shuffle
+      shuffled = ShuffleMechs.shuffleLetters(currentShuffleString);
+      // 5a - use useState to update shuffledWord
+      setShuffledWord(shuffled);
+      // clear proposedWord entered
+      setProposedWord("");
+      // reset 'wasPressed' status of letter buttons
+      resetLetterButtons();
+   }
 
    // Screen for basic layer overlay
    const OverlayPrime = () => <View style={styles.overlayPrimeScreen} />;
 
    // Screen for LevelStart overlay
-   const LevelStart = ({ title, showButton }) => (
+   const LevelStart = () => (
       <View style={styles.LevelStartOverlayScreen}>
          <Image
             source={require("../assets/level-up.png")}
@@ -124,7 +258,7 @@ export function GameScreen({ navigation }) {
    );
 
    // Screen for LevelCleared overlay
-   const LevelCleared = ({ title, showButton }) => (
+   const LevelCleared = () => (
       <View style={styles.LevelClearedOverlayScreen}>
          <Image
             source={require("../assets/trophy.png")}
@@ -176,7 +310,7 @@ export function GameScreen({ navigation }) {
    );
 
    // Screen for GameOver overlay
-   const GameOver = ({ title, showButton }) => (
+   const GameOver = () => (
       <View style={styles.GameOverOverlayScreen}>
          <Image
             source={require("../assets/game-over.png")}
@@ -252,168 +386,6 @@ export function GameScreen({ navigation }) {
          </View>
       </View>
    );
-
-   function nextLevel() {
-      // levelCounter = level + 1;
-      // setLevel(levelCounter);
-      setLevel(level + 1);
-      setLevelCleared(false);
-      setLevelStart(true);
-      // fetchButtonPressed();
-   }
-
-   function resetGame() {
-      setGameOver(false);
-      setLevel(1);
-      setGameScore(0);
-      setLevelStart(true);
-      // fetchButtonPressed();
-   }
-
-   const myInterval = useRef(undefined);
-   let counter;
-
-   function countDownOn(toRun) {
-      function start() {
-         setGameOver(false);
-         counter = countdownValue;
-         myInterval.current = setInterval(() => {
-            counter -= 1;
-            setCountdown(counter);
-            if (counter == 0) {
-               setGameOver(true);
-               stop();
-            }
-         }, 1000);
-      }
-
-      function stop() {
-         clearInterval(myInterval.current);
-      }
-
-      if (toRun) {
-         start();
-      }
-
-      if (!toRun) {
-         stop();
-      }
-   }
-
-   function fetchButtonPressed() {
-      // setGameOver(false);
-      setLevelStart(false);
-      // reset countdown
-      setCountdown(countdownValue);
-      // startCountDown();
-
-      // countDownStart();
-      countDownOn(true);
-
-      // clear proposedWord, entered by user
-      setProposedWord("");
-
-      // set word length based on level: L1_to_L3: wL=4; L4_to_L6: wL=5; ...
-      // let wordLength = Math.ceil(levelCounter / 3) + 3;
-      let wordLength = Math.ceil(level / 3) + 3;
-      // 1 - Fetch a word
-      fetchedWord = ShuffleMechs.fetchWord(wordLength, wordLength);
-      setTargetWord(fetchedWord);
-      console.log("1 - fetchedWord: " + fetchedWord);
-
-      // 2 - Generate all COMBINATIONS of a word, then only keep the ones with length >= 3
-      combinations = ShuffleMechs.combinations(fetchedWord);
-      console.log("2 - combinations:");
-      // console.log(combinations);
-
-      // 3 - Find all PERMUTATIONS of a string in javascript
-      permutations = ShuffleMechs.allPermutations(combinations);
-      console.log("3 - All permutations of fetchedWord:");
-      // console.log(permutations);
-
-      // 4 - Find all valid WORDS in the permutations
-      validWords = ShuffleMechs.createWordList(permutations);
-      console.log("4 - Valid words in permutations of fetchedWord:");
-      console.log(validWords);
-
-      // 4a - use useState to update wordList
-      setWordList(validWords);
-      console.log("4a - wordList:");
-      // console.log(wordList);
-
-      // 5 - Get an array with shuffled letters of the fetchedWord
-      shuffled = ShuffleMechs.shuffleLetters(fetchedWord);
-      console.log("5 - Shuffled letters:");
-      console.log(shuffled);
-
-      // 5a - use useState to update shuffledWord
-      setShuffledWord(shuffled);
-      console.log("5a - shuffledWord: " + shuffledWord);
-
-      // Alert.alert("Fetched word: " + fetchedWord);
-   }
-
-   function resetLetterButtons() {
-      // Reset the status of all letter buttons to Available to press
-      if (shuffledWord != null) {
-         for (let i = 0; i < shuffledWord.length; i++) {
-            shuffledWord[i].wasPressed = false;
-         }
-      }
-   }
-
-   function flatListButtonPressed(value) {
-      setProposedWord(proposedWord + value);
-      // Alert.alert(value + proposedWord);
-   }
-
-   function enterButtonPressed() {
-      // only check if at least 3 letters have been entered
-      if (proposedWord.length > 2) {
-         // let validated = [];
-         let validated = ShuffleMechs.validateSubmission(
-            proposedWord,
-            targetWord,
-            wordList
-         );
-         if (validated.won) {
-            // stop the countdown timer <<< NOT WORKING!!!
-
-            // countDownStop();
-            countDownOn(false);
-            // set flag to display 'Level cleared' component
-            setLevelCleared(true);
-         }
-         setGameScore(gameScore + validated.score);
-         if (validated.foundAlready) {
-            Alert.alert("Word found already!");
-         }
-      }
-      // clear proposedWord entered
-      setProposedWord("");
-      // reset 'wasPressed' status of letter buttons
-      resetLetterButtons();
-   }
-
-   function reshuffleButtonPressed() {
-      console.log(
-         ">>> in function 'reshuffleButtonPressed, var 'shuffledWord' = " +
-            shuffledWord
-      );
-      // create a single string from the current array 'shuffled' from objed items 'letter'
-      let currentShuffleString = "";
-      for (let i = 0; i < shuffledWord.length; i++) {
-         currentShuffleString += shuffledWord[i].letter;
-      }
-      // 5 - Get an array with shuffled letters of the submitted shuffle
-      shuffled = ShuffleMechs.shuffleLetters(currentShuffleString);
-      // 5a - use useState to update shuffledWord
-      setShuffledWord(shuffled);
-      // clear proposedWord entered
-      setProposedWord("");
-      // reset 'wasPressed' status of letter buttons
-      resetLetterButtons();
-   }
 
    return (
       <View style={styles.container}>
@@ -514,28 +486,15 @@ export function GameScreen({ navigation }) {
                   styles.segment,
                   {
                      flex: 3,
-                     // backgroundColor: "red",
                      justifyContent: "space-evenly",
                      alignItems: "center",
-                     // flexWrap: "wrap",
                   },
                ]}
             >
                <FlatList
-                  contentContainerStyle={{
-                     width: "100%",
-                     // backgroundColor: "orange",
-                     justifyContent: "space-evenly",
-                     // justifyContent: "space-around",
-                     flexWrap: "wrap",
-                     alignContent: "center",
-                     alignItems: "center",
-                  }}
+                  contentContainerStyle={styles.flatListBox}
                   horizontal={true}
-                  // data={DATA}
-                  // data={shuffled}
                   data={shuffledWord}
-                  // renderItem={({ item }) => <Item title={item.letter} />}
                   renderItem={({ item }) => (
                      <Pressable
                         unstable_pressDelay={100}
@@ -546,13 +505,11 @@ export function GameScreen({ navigation }) {
                               item.wasPressed = true;
                            }
                         }}
-                        style={({ pressed }) => [
+                        style={[
                            {
-                              // backgroundColor: pressed
                               backgroundColor: item.wasPressed
                                  ? "rgb(153, 153, 255)"
                                  : "rgb(0,0,156)",
-                              // : "rgb(0, 0, 102)", // ffdeb4
                            },
                            styles.flatListButton,
                         ]}
@@ -588,13 +545,11 @@ export function GameScreen({ navigation }) {
                         backgroundColor: pressed
                            ? "rgb(250, 227, 158)"
                            : "rgb(255,191,0)",
-                        // : "rgb(230, 180, 20)",
                      },
                      styles.button,
                      { width: "20%", height: "50%" },
                   ]}
                >
-                  {/* <Text style={styles.findStationsButtonLabel}>Re-Shuffle</Text> */}
                   <Image
                      source={require("../assets/pngwing-refresh.png")}
                      style={{
@@ -615,7 +570,6 @@ export function GameScreen({ navigation }) {
                         backgroundColor: pressed
                            ? "rgb(160, 219, 178)"
                            : "rgb(60,179,113)",
-                        // : "rgb(60, 194, 100)",
                      },
                      styles.button,
                      { width: "60%", height: "70%", borderRadius: 20 },
@@ -638,12 +592,10 @@ export function GameScreen({ navigation }) {
                   styles.segment,
                   {
                      flex: 1,
-                     // backgroundColor: "red"
                   },
                ]}
             ></View>
 
-            {/* PLAYING AROUND */}
             {(levelStart || gameOver || levelCleared) && <OverlayPrime />}
 
             {levelStart && (
@@ -669,30 +621,26 @@ const styles = StyleSheet.create({
       width: "25%",
       height: "60%",
       backgroundColor: "rgb(250,235,215)",
-      // backgroundColor: "yellow",
       borderRadius: 10,
       alignItems: "center",
       justifyContent: "center",
    },
 
    statusBoxTextRegular: {
-      // color: "red",
       color: "black",
       fontFamily: "Nunito_700Bold",
-      // fontFamily: "Nunito_400Regular",
       fontSize: 23,
    },
 
    statusBoxTextBold: {
-      // color: "red",
       color: "rgb(192,54,44)",
       fontFamily: "Nunito_700Bold",
       fontSize: 30,
    },
 
    proposedText: {
-      color: "rgb(248,248,255)",
-      // color: "blue",
+      // color: "rgb(248,248,255)",
+      color: "rgb(238,255,27)",
       fontFamily: "Nunito_700Bold",
       fontSize: 55,
    },
@@ -706,9 +654,6 @@ const styles = StyleSheet.create({
 
    LevelStartOverlayScreen: {
       position: "absolute",
-      // top: 0,
-      // left: 0,
-
       top: (Dimensions.get("screen").height * (1 - 0.8)) / 2,
       left: (Dimensions.get("screen").width * (1 - 0.8)) / 2,
 
@@ -717,7 +662,6 @@ const styles = StyleSheet.create({
       // width: Dimensions.get("window").width,
       // height: Dimensions.get("window").height,
 
-      // backgroundColor: "rgba(255, 255, 255, 0.75)",
       backgroundColor: "rgba(95, 158, 160, 0.8)",
       justifyContent: "center",
       alignItems: "center",
@@ -728,9 +672,6 @@ const styles = StyleSheet.create({
 
    LevelClearedOverlayScreen: {
       position: "absolute",
-      // top: 0,
-      // left: 0,
-
       top: (Dimensions.get("screen").height * (1 - 0.8)) / 2,
       left: (Dimensions.get("screen").width * (1 - 0.8)) / 2,
 
@@ -739,7 +680,6 @@ const styles = StyleSheet.create({
       // width: Dimensions.get("window").width,
       // height: Dimensions.get("window").height,
 
-      // backgroundColor: "rgba(255, 255, 255, 0.75)",
       backgroundColor: "rgba(252, 194, 0, 0.8)",
       justifyContent: "center",
       alignItems: "center",
@@ -750,9 +690,6 @@ const styles = StyleSheet.create({
 
    GameOverOverlayScreen: {
       position: "absolute",
-      // top: 0,
-      // left: 0,
-
       top: (Dimensions.get("screen").height * (1 - 0.8)) / 2,
       left: (Dimensions.get("screen").width * (1 - 0.8)) / 2,
 
@@ -781,6 +718,14 @@ const styles = StyleSheet.create({
       alignItems: "center",
       justifyContent: "center",
       borderRadius: 10,
+   },
+
+   flatListBox: {
+      width: "100%",
+      justifyContent: "space-evenly",
+      flexWrap: "wrap",
+      alignContent: "center",
+      alignItems: "center",
    },
 
    flatListButton: {

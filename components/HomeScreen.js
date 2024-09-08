@@ -59,7 +59,7 @@ export function HomeScreen({ navigation }) {
             {/* 'Button' to navigate to the Hall of Fame page */}
             <View style={[styles.segment]}>
                <Pressable
-                  onPress={() => navigation.navigate("Hall of Fame")}
+                  onPress={() => navigation.navigate("HALL OF FAME")}
                   unstable_pressDelay={100}
                   style={({ pressed }) => [
                      {
@@ -74,21 +74,22 @@ export function HomeScreen({ navigation }) {
                </Pressable>
             </View>
 
-            {/* 'Button' to navigate to How It Works page */}
+            {/* 'Button' to navigate to How to play page */}
             <View style={[styles.segment]}>
                <Pressable
-                  onPress={() => navigation.navigate("How It Works")}
+                  onPress={() => navigation.navigate("HOW TO PLAY")}
                   unstable_pressDelay={100}
                   style={({ pressed }) => [
                      {
                         backgroundColor: pressed
                            ? "rgb(210, 230, 255)"
-                           : "#ffdeb4", // ffdeb4
+                           : // : "#ffdeb4", // ffdeb4
+                             "rgb(255,228,181)",
                      },
                      styles.otherButton,
                   ]}
                >
-                  <Text style={styles.otherButtonLabel}>INSTRUCTIONS</Text>
+                  <Text style={styles.otherButtonLabel}>HOW TO PLAY</Text>
                </Pressable>
             </View>
          </ImageBackground>

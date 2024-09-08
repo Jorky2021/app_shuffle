@@ -4,12 +4,7 @@ import { useEffect, useState } from "react";
 // Copyright (c) 2022 Apostrophe Technologies, Inc.
 import { generate, count } from "random-words";
 
-// import Dictionary from "./assets/words_dictionary.json";
-import Dictionary from "./dict_mod.json";
-
-// import loadLocalResource from "react-native-local-resource";
-// import { checkWord } from "@env";
-// import { checkWord } from "check-word";
+import Dictionary from "../assets/dict_mod.json";
 
 // 1 - Fetch a word and return it
 export function fetchWord(minLength, maxLength) {
@@ -89,10 +84,8 @@ export function allPermutations(combinations) {
 
 // 4 - Find all valid WORDS in the permutations and return as a list
 export function createWordList(permutations) {
-   console.log("In function createWordList");
-
+   // console.log("In function createWordList");
    let wordList = [];
-
    // loop through permutations array and check if element exists inside the Dictionary
    for (var i = 0; i < permutations.length; i++) {
       if (Dictionary.hasOwnProperty(permutations[i].toLowerCase())) {
@@ -100,16 +93,7 @@ export function createWordList(permutations) {
          let inListAlready = wordList.find(
             (item) => item.word === permutations[i]
          );
-
          if (inListAlready == undefined) {
-            // console.log(
-            //    "New word: " +
-            //       permutations[i] +
-            //       ", word.length: " +
-            //       permutations[i].length +
-            //       ", score potential: " +
-            //       (permutations[i].length - 2)
-            // );
             // word object: word, wasFound (true/false), scoreValue (length)
             wordList.push({
                word: permutations[i],
@@ -119,7 +103,6 @@ export function createWordList(permutations) {
          }
       }
    }
-
    return wordList;
 }
 
@@ -127,8 +110,6 @@ export function createWordList(permutations) {
 // https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
 /* Randomize array in-place using Durstenfeld shuffle algorithm */
 export function shuffleLetters(targetWord) {
-   // console.log("In function 'shuffleLetters', var targetWord: " + targetWord);
-
    // convert string to array
    const tempArray = targetWord.split("");
 
@@ -138,17 +119,14 @@ export function shuffleLetters(targetWord) {
       tempArray[i] = tempArray[j];
       tempArray[j] = temp;
    }
-
-   // create array to hold objects {letter: 'letter'}
+   // create array to hold objects {letter: 'letter', wasPressed: true/false}
    let shuffledLetters = [];
 
    // create an array with objects
    for (var i = 0; i < tempArray.length; i++) {
       shuffledLetters.push({ id: i, letter: tempArray[i], wasPressed: false });
-      console.log("shuffledLetters: " + shuffledLetters[i].letter);
+      // console.log("shuffledLetters: " + shuffledLetters[i].letter);
    }
-
-   // return tempArray;
    return shuffledLetters;
 }
 
@@ -159,13 +137,9 @@ export function shuffleLetters(targetWord) {
 // 3 - Submission is a valid non-target word, but it was found already in earlier submission
 // 4 - Submission is not a valid word
 export function validateSubmission(submittedWord, winningWord, validWordList) {
-   // indicator if winningWord found
-   let levelWon = false;
-   // indicator if repeat find
-   let repeatFind = false;
-   // value of word in points
-   let wordValue = 0;
-   let msg = "";
+   let levelWon = false; // indicator if winningWord found
+   let repeatFind = false; // indicator if repeat find
+   let wordValue = 0; // value of word in points
    if (submittedWord == winningWord) {
       // 1 - Submission is the Targetword
       levelWon = true;
@@ -186,14 +160,11 @@ export function validateSubmission(submittedWord, winningWord, validWordList) {
          }
       }
    }
-
    // validationResult object: won (boolean), foundAlready (boolean), score (int), result (string)
    const validationResult = {
       won: levelWon,
       foundAlready: repeatFind,
       score: wordValue,
-      result: msg,
    };
-
    return validationResult;
 }

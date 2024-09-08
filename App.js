@@ -1,25 +1,3 @@
-// import { StatusBar } from 'expo-status-bar';
-// import { StyleSheet, Text, View } from 'react-native';
-
-// export default function App() {
-//   return (
-//     <View style={styles.container}>
-//       <Text>Open up App.js to start working on your app!</Text>
-//       <StatusBar style="auto" />
-//     </View>
-//   );
-// }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#fff',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-// });
-
-import { Image } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
@@ -33,13 +11,11 @@ import {
 } from "@expo-google-fonts/nunito";
 
 import { GameScreen } from "./components/GameScreen";
-// import { StationListScreen } from "./components/zzz-StationListScreen";
-// import { StationDetailsScreen } from "./components/zzz-StationDetailsScreen";
-import { HowItWorksScreen } from "./components/HowItWorksScreen";
-import { AboutUsScreen, HallOfFameScreen } from "./components/HallOfFameScreen";
+import { HallOfFameScreen } from "./components/HallOfFameScreen";
+import { HomeScreen } from "./components/HomeScreen";
+import { HowToPlayScreen } from "./components/HowToPlayScreen";
 
 import { generate, count } from "random-words";
-import { HomeScreen } from "./components/HomeScreen";
 
 // Keep the splash screen visible while we fetch resources
 // SplashScreen.preventAutoHideAsync();
@@ -59,26 +35,12 @@ function App() {
 
    const Stack = createNativeStackNavigator();
 
-   function LogoTitle() {
-      // return (
-      //    <Image
-      //       source={require("./assets/bike-icon-02-purple.png")}
-      //       style={{ width: 40, height: 40 }}
-      //       resizeMode="contain"
-      //    />
-      // );
-   }
-
    return (
       <NavigationContainer>
          <Stack.Navigator
             initialRouteName="Home"
             screenOptions={{
                headerShown: false,
-               //    headerTitleStyle: {
-               //       fontWeight: "bold",
-               //    },
-               //    headerRight: (props) => <LogoTitle {...props} />,
             }}
          >
             <Stack.Screen name="Home" component={HomeScreen} />
@@ -87,18 +49,13 @@ function App() {
                component={GameScreen}
                options={{ title: "LETTER Shuffle" }}
             />
-            {/* <Stack.Screen name="Station List" component={StationListScreen} /> */}
-            {/* <Stack.Screen
-               name="Station Details"
-               component={StationDetailsScreen}
-            /> */}
             <Stack.Screen
-               name="How It Works"
-               component={HowItWorksScreen}
+               name="HOW TO PLAY"
+               component={HowToPlayScreen}
                options={{ headerShown: true }}
             />
             <Stack.Screen
-               name="Hall of Fame"
+               name="HALL OF FAME"
                component={HallOfFameScreen}
                options={{ headerShown: true }}
             />
