@@ -47,9 +47,7 @@ export function HomeScreen({ navigation }) {
                      {
                         backgroundColor: pressed
                            ? "rgb(210, 230, 255)"
-                           : "rgb(0,127,92)",
-                        // : "#32cd32",
-                        //   "#006ab7",
+                           : "rgb(255,69,0)",
                      },
                      styles.startGameButton,
                   ]}
@@ -112,7 +110,7 @@ const styles = StyleSheet.create({
    },
 
    startGameButton: {
-      width: 300,
+      width: 320,
       height: 120,
       alignItems: "center",
       justifyContent: "center",
@@ -120,14 +118,14 @@ const styles = StyleSheet.create({
    },
 
    startGameButtonLabel: {
-      // color: "#fdfdfd",
-      color: "black",
+      color: "#fdfdfd",
+      // color: "black",
       fontFamily: "Nunito_700Bold",
       fontSize: 42,
    },
 
    otherButton: {
-      width: 250,
+      width: 280,
       height: 100,
       alignItems: "center",
       justifyContent: "center",

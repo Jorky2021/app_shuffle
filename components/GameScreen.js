@@ -51,7 +51,7 @@ export function GameScreen({ navigation }) {
    let validWords = [];
    let shuffled = [];
    // let levelCounter = 1;
-   let countdownValue = 10;
+   let countdownValue = 60;
 
    // create state elements
    const [targetWord, setTargetWord] = useState("");
@@ -113,7 +113,7 @@ export function GameScreen({ navigation }) {
                <Text
                   style={[
                      styles.findStationsButtonLabel,
-                     { fontSize: 40, letterSpacing: 3 },
+                     { fontSize: 30, letterSpacing: 3 },
                   ]}
                >
                   GO!
@@ -148,7 +148,7 @@ export function GameScreen({ navigation }) {
             </Text>
          </View>
 
-         <View style={{ flex: 1 }}>
+         <View style={{ flex: 2 }}>
             <Pressable
                onPress={() => nextLevel()}
                unstable_pressDelay={100}
@@ -350,7 +350,7 @@ export function GameScreen({ navigation }) {
       setShuffledWord(shuffled);
       console.log("5a - shuffledWord: " + shuffledWord);
 
-      Alert.alert("Fetched word: " + fetchedWord);
+      // Alert.alert("Fetched word: " + fetchedWord);
    }
 
    function resetLetterButtons() {
@@ -417,8 +417,13 @@ export function GameScreen({ navigation }) {
 
    return (
       <View style={styles.container}>
-         {/* 'BUTTON' to fetch a word */}
-         {/* <View style={[styles.segment, { flex: 2, paddingTop: 50 }]}>
+         <ImageBackground
+            source={require("../assets/pexels-jplenio-1996035-half-size.jpg")}
+            style={{ width: "100%", height: "100%" }}
+            resizeMode="cover"
+         >
+            {/* 'BUTTON' to fetch a word */}
+            {/* <View style={[styles.segment, { flex: 2, paddingTop: 50 }]}>
             <Pressable
                // onPress={() => navigation.navigate("Station List")}
                onPress={() =>
@@ -441,201 +446,214 @@ export function GameScreen({ navigation }) {
             </Pressable>
          </View> */}
 
-         {/* STATUS bar */}
-         <View
-            style={[
-               styles.segment,
-               {
-                  flex: 2,
-                  backgroundColor: "blue",
-                  flexDirection: "row",
-                  justifyContent: "space-around",
-                  alignItems: "flex-end",
-               },
-            ]}
-         >
-            <View style={[styles.statusBox]}>
-               <Text style={[styles.statusBoxTextRegular]}>LEVEL</Text>
-               <Text style={[styles.statusBoxTextRegular]}>{level}</Text>
-            </View>
-
-            <View style={[styles.statusBox]}>
-               <Text style={[styles.statusBoxTextBold]}>TIME</Text>
-               <Text style={[styles.statusBoxTextBold, { fontSize: 25 }]}>
-                  {countdown}
-               </Text>
-            </View>
-
-            <View style={[styles.statusBox]}>
-               <Text style={[styles.statusBoxTextRegular]}>SCORE</Text>
-               <Text style={[styles.statusBoxTextRegular]}>{gameScore}</Text>
-            </View>
-         </View>
-
-         {/* Solution GRID area */}
-         <View
-            style={
-               ([styles.segment],
-               {
-                  flex: 3,
-                  backgroundColor: "pink",
-                  justifyContent: "center",
-                  alignItems: "center",
-               })
-            }
-         >
+            {/* STATUS bar */}
             <View
                style={[
+                  styles.segment,
                   {
-                     width: "95%",
-                     height: "40%",
-                     backgroundColor: "green",
+                     flex: 2,
+                     // backgroundColor: "blue",
+                     flexDirection: "row",
+                     justifyContent: "space-around",
+                     alignItems: "flex-end",
+                  },
+               ]}
+            >
+               <View style={[styles.statusBox]}>
+                  <Text style={[styles.statusBoxTextRegular]}>LEVEL</Text>
+                  <Text style={[styles.statusBoxTextRegular]}>{level}</Text>
+               </View>
+
+               <View style={[styles.statusBox]}>
+                  <Text style={[styles.statusBoxTextBold]}>TIME</Text>
+                  <Text style={[styles.statusBoxTextBold, { fontSize: 25 }]}>
+                     {countdown}
+                  </Text>
+               </View>
+
+               <View style={[styles.statusBox]}>
+                  <Text style={[styles.statusBoxTextRegular]}>SCORE</Text>
+                  <Text style={[styles.statusBoxTextRegular]}>{gameScore}</Text>
+               </View>
+            </View>
+
+            {/* Solution GRID area */}
+            <View
+               style={
+                  ([styles.segment],
+                  {
+                     flex: 3,
+                     // backgroundColor: "pink",
                      justifyContent: "center",
                      alignItems: "center",
-                     borderRadius: 20,
-                  },
-               ]}
+                  })
+               }
             >
-               <Text style={[styles.proposedText, { letterSpacing: 3 }]}>
-                  {proposedWord}
-               </Text>
-            </View>
-         </View>
-
-         {/* Display buttons of shuffled word */}
-         <View
-            style={[
-               styles.segment,
-               {
-                  flex: 3,
-                  backgroundColor: "red",
-                  justifyContent: "space-evenly",
-                  alignItems: "center",
-                  // flexWrap: "wrap",
-               },
-            ]}
-         >
-            <FlatList
-               contentContainerStyle={{
-                  width: "100%",
-                  backgroundColor: "orange",
-                  justifyContent: "space-evenly",
-                  // justifyContent: "space-around",
-                  flexWrap: "wrap",
-                  alignContent: "center",
-                  alignItems: "center",
-               }}
-               horizontal={true}
-               // data={DATA}
-               // data={shuffled}
-               data={shuffledWord}
-               // renderItem={({ item }) => <Item title={item.letter} />}
-               renderItem={({ item }) => (
-                  <Pressable
-                     unstable_pressDelay={100}
-                     onPress={() => {
-                        // Check if letter was pressed already, if not set ot to true
-                        if (!item.wasPressed) {
-                           flatListButtonPressed(item.letter);
-                           item.wasPressed = true;
-                        }
-                     }}
-                     style={({ pressed }) => [
-                        {
-                           // backgroundColor: pressed
-                           backgroundColor: item.wasPressed
-                              ? "rgb(153, 153, 255)"
-                              : "rgb(0, 0, 102)", // ffdeb4
-                        },
-                        styles.flatListButton,
-                     ]}
-                  >
-                     <Text style={styles.flatListButtonText}>
-                        {item.letter}
-                     </Text>
-                  </Pressable>
-               )}
-               keyExtractor={(item) => item.id}
-            />
-         </View>
-
-         {/* 'ENTER' Button */}
-         <View
-            style={[
-               styles.segment,
-               {
-                  flex: 2,
-                  backgroundColor: "black",
-                  flexDirection: "row",
-                  justifyContent: "space-evenly",
-               },
-            ]}
-         >
-            <Pressable
-               unstable_pressDelay={100}
-               onPress={() => {
-                  reshuffleButtonPressed();
-               }}
-               style={({ pressed }) => [
-                  {
-                     backgroundColor: pressed
-                        ? "rgb(250, 227, 158)"
-                        : "rgb(230, 180, 20)",
-                  },
-                  styles.button,
-                  { width: "20%", height: "50%" },
-               ]}
-            >
-               {/* <Text style={styles.findStationsButtonLabel}>Re-Shuffle</Text> */}
-               <Image
-                  source={require("../assets/pngwing-refresh.png")}
-                  style={{
-                     width: "75%",
-                     height: "75%",
-                     resizeMode: "contain",
-                  }}
-               ></Image>
-            </Pressable>
-
-            <Pressable
-               unstable_pressDelay={100}
-               onPress={() => {
-                  enterButtonPressed();
-               }}
-               style={({ pressed }) => [
-                  {
-                     backgroundColor: pressed
-                        ? "rgb(160, 219, 178)"
-                        : "rgb(60, 194, 100)",
-                  },
-                  styles.button,
-                  { width: "60%", height: "70%" },
-               ]}
-            >
-               <Text
+               <View
                   style={[
-                     styles.findStationsButtonLabel,
-                     { fontSize: 50, letterSpacing: 5 },
+                     {
+                        width: "95%",
+                        height: "40%",
+                        // backgroundColor: "rgb(152, 105, 96)",
+                        backgroundColor: "rgb(111,78,55)",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        borderRadius: 20,
+                     },
                   ]}
                >
-                  ENTER
-               </Text>
-            </Pressable>
-         </View>
+                  <Text style={[styles.proposedText, { letterSpacing: 2 }]}>
+                     {proposedWord}
+                  </Text>
+               </View>
+            </View>
 
-         {/* 'Button' to re-shuffle the available letters */}
-         <View
-            style={[styles.segment, { flex: 1, backgroundColor: "red" }]}
-         ></View>
+            {/* Display buttons of shuffled word */}
+            <View
+               style={[
+                  styles.segment,
+                  {
+                     flex: 3,
+                     // backgroundColor: "red",
+                     justifyContent: "space-evenly",
+                     alignItems: "center",
+                     // flexWrap: "wrap",
+                  },
+               ]}
+            >
+               <FlatList
+                  contentContainerStyle={{
+                     width: "100%",
+                     // backgroundColor: "orange",
+                     justifyContent: "space-evenly",
+                     // justifyContent: "space-around",
+                     flexWrap: "wrap",
+                     alignContent: "center",
+                     alignItems: "center",
+                  }}
+                  horizontal={true}
+                  // data={DATA}
+                  // data={shuffled}
+                  data={shuffledWord}
+                  // renderItem={({ item }) => <Item title={item.letter} />}
+                  renderItem={({ item }) => (
+                     <Pressable
+                        unstable_pressDelay={100}
+                        onPress={() => {
+                           // Check if letter was pressed already, if not set ot to true
+                           if (!item.wasPressed) {
+                              flatListButtonPressed(item.letter);
+                              item.wasPressed = true;
+                           }
+                        }}
+                        style={({ pressed }) => [
+                           {
+                              // backgroundColor: pressed
+                              backgroundColor: item.wasPressed
+                                 ? "rgb(153, 153, 255)"
+                                 : "rgb(0,0,156)",
+                              // : "rgb(0, 0, 102)", // ffdeb4
+                           },
+                           styles.flatListButton,
+                        ]}
+                     >
+                        <Text style={styles.flatListButtonText}>
+                           {item.letter}
+                        </Text>
+                     </Pressable>
+                  )}
+                  keyExtractor={(item) => item.id}
+               />
+            </View>
 
-         {/* PLAYING AROUND */}
-         {(levelStart || gameOver || levelCleared) && <OverlayPrime />}
+            {/* 'ENTER' Button */}
+            <View
+               style={[
+                  styles.segment,
+                  {
+                     flex: 2,
+                     // backgroundColor: "black",
+                     flexDirection: "row",
+                     justifyContent: "space-evenly",
+                  },
+               ]}
+            >
+               <Pressable
+                  unstable_pressDelay={100}
+                  onPress={() => {
+                     reshuffleButtonPressed();
+                  }}
+                  style={({ pressed }) => [
+                     {
+                        backgroundColor: pressed
+                           ? "rgb(250, 227, 158)"
+                           : "rgb(255,191,0)",
+                        // : "rgb(230, 180, 20)",
+                     },
+                     styles.button,
+                     { width: "20%", height: "50%" },
+                  ]}
+               >
+                  {/* <Text style={styles.findStationsButtonLabel}>Re-Shuffle</Text> */}
+                  <Image
+                     source={require("../assets/pngwing-refresh.png")}
+                     style={{
+                        width: "75%",
+                        height: "75%",
+                        resizeMode: "contain",
+                     }}
+                  ></Image>
+               </Pressable>
 
-         {levelStart && <LevelStart title="READY TO START" showButton={true} />}
-         {gameOver && <GameOver title="GAME OVER" showButton={true} />}
-         {levelCleared && (
-            <LevelCleared title="LEVEL CLEARED!" showButton={true} />
-         )}
+               <Pressable
+                  unstable_pressDelay={100}
+                  onPress={() => {
+                     enterButtonPressed();
+                  }}
+                  style={({ pressed }) => [
+                     {
+                        backgroundColor: pressed
+                           ? "rgb(160, 219, 178)"
+                           : "rgb(60,179,113)",
+                        // : "rgb(60, 194, 100)",
+                     },
+                     styles.button,
+                     { width: "60%", height: "70%", borderRadius: 20 },
+                  ]}
+               >
+                  <Text
+                     style={[
+                        styles.findStationsButtonLabel,
+                        { fontSize: 50, letterSpacing: 5 },
+                     ]}
+                  >
+                     ENTER
+                  </Text>
+               </Pressable>
+            </View>
+
+            {/* 'Button' to re-shuffle the available letters */}
+            <View
+               style={[
+                  styles.segment,
+                  {
+                     flex: 1,
+                     // backgroundColor: "red"
+                  },
+               ]}
+            ></View>
+
+            {/* PLAYING AROUND */}
+            {(levelStart || gameOver || levelCleared) && <OverlayPrime />}
+
+            {levelStart && (
+               <LevelStart title="READY TO START" showButton={true} />
+            )}
+            {gameOver && <GameOver title="GAME OVER" showButton={true} />}
+            {levelCleared && (
+               <LevelCleared title="LEVEL CLEARED!" showButton={true} />
+            )}
+         </ImageBackground>
       </View>
    );
 }
@@ -649,29 +667,34 @@ const styles = StyleSheet.create({
 
    statusBox: {
       width: "25%",
-      height: "45%",
-      backgroundColor: "yellow",
+      height: "60%",
+      backgroundColor: "rgb(250,235,215)",
+      // backgroundColor: "yellow",
       borderRadius: 10,
       alignItems: "center",
       justifyContent: "center",
    },
 
    statusBoxTextRegular: {
-      color: "red",
-      fontFamily: "Nunito_400Regular",
-      fontSize: 22,
+      // color: "red",
+      color: "black",
+      fontFamily: "Nunito_700Bold",
+      // fontFamily: "Nunito_400Regular",
+      fontSize: 23,
    },
 
    statusBoxTextBold: {
-      color: "red",
+      // color: "red",
+      color: "rgb(192,54,44)",
       fontFamily: "Nunito_700Bold",
-      fontSize: 24,
+      fontSize: 30,
    },
 
    proposedText: {
-      color: "blue",
+      color: "rgb(248,248,255)",
+      // color: "blue",
       fontFamily: "Nunito_700Bold",
-      fontSize: 60,
+      fontSize: 55,
    },
 
    overlayPrimeScreen: {
@@ -761,8 +784,8 @@ const styles = StyleSheet.create({
    },
 
    flatListButton: {
-      width: 70,
-      height: 70,
+      width: 75,
+      height: 75,
       margin: 7,
       borderRadius: 10,
       alignItems: "center",
@@ -772,7 +795,7 @@ const styles = StyleSheet.create({
    flatListButtonText: {
       color: "#fdfdfd",
       fontFamily: "Nunito_700Bold",
-      fontSize: 35,
+      fontSize: 40,
    },
 
    findStationsButtonLabel: {
