@@ -639,7 +639,6 @@ const styles = StyleSheet.create({
    },
 
    proposedText: {
-      // color: "rgb(248,248,255)",
       color: "rgb(238,255,27)",
       fontFamily: "Nunito_700Bold",
       fontSize: 55,

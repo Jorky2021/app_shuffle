@@ -83,8 +83,7 @@ export function HomeScreen({ navigation }) {
                      {
                         backgroundColor: pressed
                            ? "rgb(210, 230, 255)"
-                           : // : "#ffdeb4", // ffdeb4
-                             "rgb(255,228,181)",
+                           : "rgb(255,228,181)",
                      },
                      styles.otherButton,
                   ]}
