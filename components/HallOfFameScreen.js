@@ -18,12 +18,11 @@ export function HallOfFameScreen({ navigation }) {
             resizeMode="cover"
          >
             <Image
-               source={require("../assets/medal-256.png")}
+               source={require("../assets/medal-256-col.png")}
                style={[
                   styles.segment,
                   {
                      flex: 1,
-                     // top: "7%",
                      width: "100%",
                      height: "100%",
                      resizeMode: "contain",
@@ -31,66 +30,42 @@ export function HallOfFameScreen({ navigation }) {
                ]}
             ></Image>
 
-            {/* 'Button' to navigate to Game page */}
-            <View
-               style={[
-                  styles.segment,
-                  {
-                     flex: 5,
-                     top: "15%",
-                  },
-               ]}
-            >
-               {/* <Pressable
-                  onPress={() => navigation.navigate("Game")}
-                  unstable_pressDelay={100}
-                  style={({ pressed }) => [
-                     {
-                        backgroundColor: pressed
-                           ? "rgb(210, 230, 255)"
-                           : "rgb(255,69,0)",
-                     },
-                     styles.startGameButton,
-                  ]}
-               >
-                  <Text style={styles.startGameButtonLabel}>PLAY GAME</Text>
-               </Pressable> */}
-            </View>
+            <View style={{ flex: 4, paddingTop: 10 }}>
+               <View style={[styles.segment, { flexDirection: "row" }]}>
+                  <Text style={[styles.contentNames, { flex: 3 }]}>tigres</Text>
+                  <Text style={[styles.contentScores, { flex: 1 }]}>192</Text>
+               </View>
 
-            {/* 'Button' to navigate to the Hall of Fame page */}
-            <View style={[styles.segment]}>
-               {/* <Pressable
-                  onPress={() => navigation.navigate("Hall of Fame")}
-                  unstable_pressDelay={100}
-                  style={({ pressed }) => [
-                     {
-                        backgroundColor: pressed
-                           ? "rgb(210, 230, 255)"
-                           : "rgb(238,230,255)", // #579257
-                     },
-                     styles.otherButton,
-                  ]}
-               >
-                  <Text style={styles.otherButtonLabel}>HALL OF FAME</Text>
-               </Pressable> */}
-            </View>
+               <View style={[styles.segment, { flexDirection: "row" }]}>
+                  <Text style={[styles.contentNames, { flex: 3 }]}>ROY</Text>
+                  <Text style={[styles.contentScores, { flex: 1 }]}>187</Text>
+               </View>
 
-            {/* 'Button' to navigate to How It Works page */}
-            <View style={[styles.segment]}>
-               {/* <Pressable
-                  onPress={() => navigation.navigate("How It Works")}
-                  unstable_pressDelay={100}
-                  style={({ pressed }) => [
-                     {
-                        backgroundColor: pressed
-                           ? "rgb(210, 230, 255)"
-                           : "#ffdeb4", // ffdeb4
-                     },
-                     styles.otherButton,
-                  ]}
-               >
-                  <Text style={styles.otherButtonLabel}>INSTRUCTIONS</Text>
-               </Pressable> */}
+               <View style={[styles.segment, { flexDirection: "row" }]}>
+                  <Text style={[styles.contentNames, { flex: 3 }]}>
+                     cat4ward
+                  </Text>
+                  <Text style={[styles.contentScores, { flex: 1 }]}>175</Text>
+               </View>
+
+               <View style={[styles.segment, { flexDirection: "row" }]}>
+                  <Text style={[styles.contentNames, { flex: 3 }]}>tekTap</Text>
+                  <Text style={[styles.contentScores, { flex: 1 }]}>86</Text>
+               </View>
+
+               <View style={[styles.segment, { flexDirection: "row" }]}>
+                  <Text style={[styles.contentNames, { flex: 3 }]}>
+                     Lisa007
+                  </Text>
+                  <Text style={[styles.contentScores, { flex: 1 }]}>52</Text>
+               </View>
+
+               <View style={[styles.segment, { flexDirection: "row" }]}>
+                  <Text style={[styles.contentNames, { flex: 3 }]}>
+                     Reigh_k
+                  </Text>
+                  <Text style={[styles.contentScores, { flex: 1 }]}>50</Text>
+               </View>
             </View>
          </ImageBackground>
       </View>
@@ -186,28 +161,30 @@ const styles = StyleSheet.create({
       alignItems: "left",
       justifyContent: "center",
    },
-   title: {
-      backgroundColor: "#71ab71",
-      color: "#fdfdfd",
-      fontFamily: "Nunito_700Bold",
-      fontSize: 22,
-      paddingLeft: 15,
-      paddingRight: 15,
-      paddingTop: 10,
-      paddingBottom: 10,
-   },
-   contentContainer: {
-      padding: 5,
-      paddingBottom: 10,
-   },
-   content: {
-      color: "#fdfdfd",
+
+   contentNames: {
+      // color: "#fdfdfd",
+      color: "rgb(252,194,0)",
+      // color: "rgb(250,240,190)",
       textAlign: "justify",
-      fontFamily: "Nunito_400Regular",
-      fontSize: 18,
-      paddingLeft: 10,
-      paddingRight: 10,
+      fontFamily: "Nunito_700Bold",
+      fontSize: 35,
+      paddingLeft: 35,
+      paddingRight: 35,
       paddingTop: 5,
-      paddingBottom: 5,
+      paddingBottom: 10,
+   },
+
+   contentScores: {
+      // color: "#fdfdfd",
+      // color: "rgb(252,194,0)",
+      color: "rgb(250,240,190)",
+      textAlign: "justify",
+      fontFamily: "Nunito_700Bold",
+      fontSize: 35,
+      paddingLeft: 35,
+      paddingRight: 35,
+      paddingTop: 5,
+      paddingBottom: 10,
    },
 });
