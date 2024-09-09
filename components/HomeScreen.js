@@ -119,7 +119,6 @@ const styles = StyleSheet.create({
 
    startGameButtonLabel: {
       color: "#fdfdfd",
-      // color: "black",
       fontFamily: "Nunito_700Bold",
       fontSize: 42,
    },
@@ -137,11 +136,4 @@ const styles = StyleSheet.create({
       fontFamily: "Nunito_700Bold",
       fontSize: 28,
    },
-
-   // aboutMeButtonLabel: {
-   //    // color: "#fdfdfd",
-   //    color: "black",
-   //    fontFamily: "Nunito_700Bold",
-   //    fontSize: 30,
-   // },
 });

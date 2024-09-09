@@ -112,12 +112,10 @@ export function HowToPlayScreen({ navigation }) {
 const styles = StyleSheet.create({
    container: {
       flex: 1,
-      // backgroundColor: '#ffdeb4',
       alignItems: "left",
       justifyContent: "center",
    },
    title: {
-      // backgroundColor: "#faebd7",
       backgroundColor: " rgb(8,69,126)",
       // color: "black",
       color: "white",

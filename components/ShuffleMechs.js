@@ -160,6 +160,7 @@ export function validateSubmission(submittedWord, winningWord, validWordList) {
          }
       }
    }
+
    // validationResult object: won (boolean), foundAlready (boolean), score (int), result (string)
    const validationResult = {
       won: levelWon,

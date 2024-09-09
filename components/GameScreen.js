@@ -2,7 +2,6 @@ import {
    Alert,
    Dimensions,
    FlatList,
-   FlatListComponent,
    Image,
    ImageBackground,
    Pressable,
@@ -13,35 +12,8 @@ import {
 
 import React, { useEffect, useRef, useState } from "react";
 
-import { generate, count, wordsList } from "random-words";
-
 // import functions to fetch word and shuffle letters
 import * as ShuffleMechs from "./ShuffleMechs";
-import { Cell, Section, TableView } from "react-native-tableview-simple";
-
-// dummy data for Table View
-// const DATA = [
-//    {
-//       id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-//       letter: "A",
-//    },
-//    {
-//       id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-//       letter: "M",
-//    },
-//    {
-//       id: "58694a0f-3da1-471f-bd96-145571e29d72",
-//       letter: "I",
-//    },
-//    {
-//       id: "69498a0f-3da1-471f-bd96-145571e29d72",
-//       letter: "K",
-//    },
-//    {
-//       id: "58694a0f-3db5-471f-bd96-145571e29d72",
-//       letter: "W",
-//    },
-// ];
 
 export function GameScreen({ navigation }) {
    // target word
@@ -64,20 +36,22 @@ export function GameScreen({ navigation }) {
    const [levelCleared, setLevelCleared] = useState(false);
    const [countdown, setCountdown] = useState(countdownValue);
 
+   // updated states pre next level
    function nextLevel() {
       setLevel(level + 1);
       setLevelCleared(false);
       setLevelStart(true);
    }
 
+   // update states at game over
    function resetGame() {
       setGameOver(false);
       setLevel(1);
       setGameScore(0);
       setLevelStart(true);
-      // fetchButtonPressed();
    }
 
+   // countdown setup
    const myInterval = useRef(undefined);
    let counter;
 
@@ -150,8 +124,8 @@ export function GameScreen({ navigation }) {
       // Alert.alert("Fetched word: " + fetchedWord);
    }
 
+   // Reset the status of all letter buttons to Available to press
    function resetLetterButtons() {
-      // Reset the status of all letter buttons to Available to press
       if (shuffledWord != null) {
          for (let i = 0; i < shuffledWord.length; i++) {
             shuffledWord[i].wasPressed = false;
@@ -161,7 +135,6 @@ export function GameScreen({ navigation }) {
 
    function flatListButtonPressed(value) {
       setProposedWord(proposedWord + value);
-      // Alert.alert(value + proposedWord);
    }
 
    function enterButtonPressed() {
@@ -238,7 +211,6 @@ export function GameScreen({ navigation }) {
                      backgroundColor: pressed
                         ? "rgb(210, 230, 255)"
                         : "rgb(33,79,198)",
-                     // : "darkblue", // #579257
                   },
                   styles.button,
                   { borderRadius: 20, width: 200, height: 70 },
@@ -343,7 +315,6 @@ export function GameScreen({ navigation }) {
                      backgroundColor: pressed
                         ? "rgb(210, 230, 255)"
                         : "darkblue", // #579257
-                     // : "rgb(50,205,50)", // #579257
                   },
                   styles.button,
                   { borderRadius: 20, width: 270, height: 80 },
@@ -394,37 +365,12 @@ export function GameScreen({ navigation }) {
             style={{ width: "100%", height: "100%" }}
             resizeMode="cover"
          >
-            {/* 'BUTTON' to fetch a word */}
-            {/* <View style={[styles.segment, { flex: 2, paddingTop: 50 }]}>
-            <Pressable
-               // onPress={() => navigation.navigate("Station List")}
-               onPress={() =>
-                  // Alert.alert(generate({ minLength: 5, maxLength: 5 }))
-                  // Alert.alert(ShuffleMechs.fetchWord(4, 4))
-                  fetchButtonPressed()
-               }
-               unstable_pressDelay={100}
-               style={({ pressed }) => [
-                  {
-                     backgroundColor: pressed
-                        ? "rgb(242, 182, 210)"
-                        : "rgb(176, 2, 83)",
-                  },
-                  styles.button,
-                  { borderColor: "#006699" },
-               ]}
-            >
-               <Text style={styles.findStationsButtonLabel}>Fetch a word</Text>
-            </Pressable>
-         </View> */}
-
             {/* STATUS bar */}
             <View
                style={[
                   styles.segment,
                   {
                      flex: 2,
-                     // backgroundColor: "blue",
                      flexDirection: "row",
                      justifyContent: "space-around",
                      alignItems: "flex-end",
@@ -455,7 +401,6 @@ export function GameScreen({ navigation }) {
                   ([styles.segment],
                   {
                      flex: 3,
-                     // backgroundColor: "pink",
                      justifyContent: "center",
                      alignItems: "center",
                   })
@@ -466,7 +411,6 @@ export function GameScreen({ navigation }) {
                      {
                         width: "95%",
                         height: "40%",
-                        // backgroundColor: "rgb(152, 105, 96)",
                         backgroundColor: "rgb(111,78,55)",
                         justifyContent: "center",
                         alignItems: "center",
@@ -529,7 +473,6 @@ export function GameScreen({ navigation }) {
                   styles.segment,
                   {
                      flex: 2,
-                     // backgroundColor: "black",
                      flexDirection: "row",
                      justifyContent: "space-evenly",
                   },
@@ -655,11 +598,8 @@ const styles = StyleSheet.create({
       position: "absolute",
       top: (Dimensions.get("screen").height * (1 - 0.8)) / 2,
       left: (Dimensions.get("screen").width * (1 - 0.8)) / 2,
-
       height: Dimensions.get("screen").height * 0.8,
       width: Dimensions.get("screen").width * 0.8,
-      // width: Dimensions.get("window").width,
-      // height: Dimensions.get("window").height,
 
       backgroundColor: "rgba(95, 158, 160, 0.8)",
       justifyContent: "center",
@@ -673,11 +613,8 @@ const styles = StyleSheet.create({
       position: "absolute",
       top: (Dimensions.get("screen").height * (1 - 0.8)) / 2,
       left: (Dimensions.get("screen").width * (1 - 0.8)) / 2,
-
       height: Dimensions.get("screen").height * 0.8,
       width: Dimensions.get("screen").width * 0.8,
-      // width: Dimensions.get("window").width,
-      // height: Dimensions.get("window").height,
 
       backgroundColor: "rgba(252, 194, 0, 0.8)",
       justifyContent: "center",
@@ -691,11 +628,8 @@ const styles = StyleSheet.create({
       position: "absolute",
       top: (Dimensions.get("screen").height * (1 - 0.8)) / 2,
       left: (Dimensions.get("screen").width * (1 - 0.8)) / 2,
-
       height: Dimensions.get("screen").height * 0.8,
       width: Dimensions.get("screen").width * 0.8,
-      // width: Dimensions.get("window").width,
-      // height: Dimensions.get("window").height,
 
       backgroundColor: "rgba(255, 55, 155, 0.8)",
       justifyContent: "center",
